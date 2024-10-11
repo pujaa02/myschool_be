@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/pooja-moravadiya/Documents/myproject/myschool_be/log/debug/.d993cfe687819e8d69aeb86e8c872e713674c03e-audit.json",
+    "files": [
+        {
+            "date": 1728635179149,
+            "name": "/home/pooja-moravadiya/Documents/myproject/myschool_be/log/debug/2024-10-11.log",
+            "hash": "d5b0ec1a4f5be220fb06f9028b88242b8c7f2df89e2a9d91d44d22960d1baaaf"
+        }
+    ],
+    "hashType": "sha256"
+}

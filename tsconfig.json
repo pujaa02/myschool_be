@@ -1,0 +1,49 @@
+{
+  "compileOnSave": false,
+  // "ts-node": {
+  //   "require": ["tsconfig-paths/register"],
+  //   "transpileOnly": true
+  // },
+  "compilerOptions": {
+    "target": "ES2021",
+    "typeRoots": ["node_modules/@types"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "pretty": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "dist",
+    "allowJs": true,
+    "noEmit": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "importHelpers": true,
+    "baseUrl": "src",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["DOM", "ES2021.String", "esnext.asynciterable"],
+    "paths": {
+      "*": ["overWriteTypes/"],
+      "@/*": ["*"],
+      "@data-migrations/*": ["data-migrations/*"],
+      "@modules/*": ["modules/*"],
+      "@middlewares/*": ["middlewares/*"], 
+      "@lib/*": ["common/lib/*"],
+      "@config": ["config"],
+      "@constants/*": ["lib/common/constants/*"],
+   
+      "@sequelizeDir/*": ["sequelizeDir/*"],
+      "@messages": ["lib/common/constants/messages.constants"],
+     
+      "@common/*": ["common/*"],
+      "@helpers/*": ["common/helpers/*"],
+      "@logger": ["common/utils/logger/index.ts"],
+      "@exceptions": ["common/helpers/response/HttpException.ts"],
+    }
+  },
+  "include": ["src/**/*.ts",  ".env", "src/modules/socket/route", "src/lib/common/database/attributeSetter.helper.ts", "src/modules/courseRooms/repository/courseRooms.repository.ts"],
+  "exclude": ["node_modules", "src/http", "src/logs", "src/tests"]
+}

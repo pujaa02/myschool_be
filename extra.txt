@@ -1,0 +1,341 @@
+import { initializeApp } from '@/app';
+import db from '@/sequelizeDir/models';
+import { logger } from '@logger';
+import AuthRoute from './modules/auth/routes/auth.route';
+
+import AcademyRoute from './modules/academy/routes/academy.route';
+import AtecoCodeRoute from './modules/atecoCode/routes/atecoCode.route';
+import CalendarRoute from './modules/calendar/routes/calendar.route';
+import CalendarEventRoute from './modules/calendarEvent/routes/calendarEvent.route';
+import CourseCategoryRoute from './modules/category/routes/courseCategory.route';
+import CertificateTemplateRoute from './modules/certificate templates/routes/certificateTemplate.route';
+import ChatRoute from './modules/chat/routes/chat.route';
+import ClientPurchaseOrderRoute from './modules/clientPurchaseOrder/routes/clientPurchaseOrder.route';
+import CMSPageRoutes from './modules/cms/routes/cmsPage.route';
+import CodeRoute from './modules/codes/routes/code.route';
+import CompanyRoute from './modules/company/routes/company.route';
+import CourseRoomsRoute from './modules/courseRooms/routes/courseRooms.route';
+import CourseRoute from './modules/courses/routes/course.route';
+import CourseBundleRoute from './modules/courses/routes/courseBundle.route';
+import CourseParticipatesRoute from './modules/courses/routes/courseParticipate.route';
+import CourseRequestRoute from './modules/courses/routes/courseRequest.route';
+import CourseTemplateRoute from './modules/courses/routes/courseTemplate.route';
+import CreditNotesRoute from './modules/creditNotes/routes/creditNotes.route';
+import ReportsRoute from './modules/dashboard copy/routes/report.route';
+import DashboardRoute from './modules/dashboard/routes/dashboard.route';
+import DataMigrationRoute from './modules/dataMigration/routes/dataMigration.route';
+import EmailRoute from './modules/emailTemplate/routes/email.route';
+import EmailTemplateRoute from './modules/emailTemplate/routes/emailTemplate.route';
+import ExamParticipateRoute from './modules/exam/routes/examParticipate.route';
+import ExamSubmissionRoute from './modules/exam/routes/examSubmission.route';
+import ExpenseRoute from './modules/expense/routes/expense.route';
+import FeatureRoute from './modules/feature/routes/feature.route';
+import FeedbackRoute from './modules/feedback/routes/feedback.route';
+import FuttureInCloudRoutes from './modules/futtureInCloud/routes/futtureInCloud.route';
+import InternalEventRoute from './modules/internalEvent/route/internalEvent.route';
+import InvoiceRoute from './modules/invoice/routes/invoice.route';
+import CourseLessonApprovalRoute from './modules/lessonApproval/routes/courseLessonApproval.route';
+import NotificationRoute from './modules/notification/routes/notification.route';
+import OrderRoute from './modules/order/routes/order.route';
+import QuoteProductRoute from './modules/order/routes/products.route';
+import OrderAttachmentsRoute from './modules/orderAttachments/routes/orderAttachments.route';
+import OrderCommentRoute from './modules/orderComments/routes/orderComments.route';
+import PaymentTermsRoute from './modules/paymentTerms/routes/paymentTerms.route';
+import PermissionRoute from './modules/permission/routes/permission.route';
+import ProjectRoute from './modules/project/routes/project.route';
+import BoardRoute from './modules/projectManagement/route/board.route';
+import CardRoute from './modules/projectManagement/route/card.route';
+import LabelRoute from './modules/projectManagement/route/label.route';
+import StageRoute from './modules/projectManagement/route/stage.route';
+import ProjectNoteRoute from './modules/projectNote/routes/projectNote.route';
+import PublicRoute from './modules/public/routes/public.route';
+import QuoteRoute from './modules/quote/routes/quote.route';
+import CourseResourcesRoute from './modules/resources/routes/courseResources.route';
+import RoleRoute from './modules/role/routes/role.route';
+import RolePermissionRoute from './modules/rolePermission/routes/rolePermission.route';
+import SendEmailRoute from './modules/sendMail/routes/sendMail.route';
+import StrategiesRoutes from './modules/strategies/routes/strategies.route';
+import CourseSubCategoryRoute from './modules/subCategory/routes/courseSubCategory.route';
+import SurveyTemplateRoute from './modules/survey/routes/surveyTemplate.route';
+import LogRoute from './modules/systemLogs/routes/systemLog.route';
+import TrainerInvoiceRoute from './modules/trainerInvoice/routes/trainerInvoice.route';
+import TranslatorRoute from './modules/translator/routes/translator.route';
+import ManagerRoute from './modules/user/routes/manager.route';
+import PrivateIndividualRoute from './modules/user/routes/privateIndividual.route';
+import TrainerRoute from './modules/user/routes/trainer.route';
+import UserRoute from './modules/user/routes/user.route';
+import WebhookRoute from './modules/webhook/route/webhook.route';
+
+const routes = [
+  new EmailRoute(),
+  new PaymentTermsRoute(),
+  new LogRoute(),
+  new OrderRoute(),
+  new OrderCommentRoute(),
+  new OrderAttachmentsRoute(),
+  new ClientPurchaseOrderRoute(),
+  new InvoiceRoute(),
+  new QuoteProductRoute(),
+  new CreditNotesRoute(),
+  new TrainerInvoiceRoute(),
+  new DashboardRoute(),
+  new ReportsRoute(),
+  new SurveyTemplateRoute(),
+  new FeedbackRoute(),
+  new ExamSubmissionRoute(),
+  new ExamParticipateRoute(),
+  new QuoteRoute(),
+  new UserRoute(),
+  new ManagerRoute(),
+  new PrivateIndividualRoute(),
+  new AuthRoute(),
+  new CompanyRoute(),
+  new RolePermissionRoute(),
+  new FeatureRoute(),
+  new CMSPageRoutes(),
+  new ChatRoute(),
+  new NotificationRoute(),
+  new RoleRoute(),
+  new PermissionRoute(),
+  new CertificateTemplateRoute(),
+  new CourseBundleRoute(),
+  new EmailTemplateRoute(),
+  new SendEmailRoute(),
+  new CalendarRoute(),
+  new WebhookRoute(),
+  new CourseCategoryRoute(),
+  new CourseSubCategoryRoute(),
+  new FuttureInCloudRoutes(),
+  new ProjectRoute(),
+  new CourseTemplateRoute(),
+  new CodeRoute(),
+  new CourseRoute(),
+  new AcademyRoute(),
+  new ProjectNoteRoute(),
+  new CalendarEventRoute(),
+  new InternalEventRoute(),
+  new PublicRoute(),
+  new CourseResourcesRoute(),
+  new CalendarEventRoute(),
+  new InternalEventRoute(),
+  new BoardRoute(),
+  new StageRoute(),
+  new CourseParticipatesRoute(),
+  new CourseLessonApprovalRoute(),
+  new CardRoute(),
+  new LabelRoute(),
+  new TrainerRoute(),
+  new CourseRoomsRoute(),
+  new CourseRequestRoute(),
+  new TranslatorRoute(),
+  new StrategiesRoutes(),
+  new ExpenseRoute(),
+  new DataMigrationRoute(),
+  new AtecoCodeRoute(),
+];
+
+const main = async () => {
+  try {
+    await db.authenticate();
+    const apiRoutes = routes;
+    await initializeApp(apiRoutes);
+  } catch (err) {
+    logger.error('[SERVER START]: %s', err);
+    process.exit(1);
+  }
+};
+
+main();
+
+
+/* eslint-disable @typescript-eslint/no-shadow */
+import './instrument.js';
+//
+import { LOG_FORMAT, NODE_ENV, PORT } from '@config';
+import { logger, stream } from '@logger';
+import errorMiddleware from '@middlewares/error.middleware';
+import * as Sentry from '@sentry/node';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express, { Application, NextFunction, Request, Response, Router } from 'express';
+import helmet from 'helmet';
+import hpp from 'hpp';
+import * as http from 'http';
+import morgan from 'morgan';
+import path from 'path';
+import requestIp from 'request-ip';
+import { Transaction } from 'sequelize';
+import sharp from 'sharp';
+import swaggerUi from 'swagger-ui-express';
+import { timeZones } from './common/constants/timezone.constants';
+import { LanguageEnum, LanguageEnumCMS } from './common/interfaces/general/general.interface';
+import { Routes } from './common/interfaces/general/routes.interface';
+import { initMySqlSequelize } from './modules/dataMigration/models';
+import socket from './modules/socket/route';
+import db from './sequelizeDir/models';
+
+const fs = require('fs');
+const fsPromise = require('fs/promises');
+const app: Application = express();
+const env: string = NODE_ENV || 'development';
+const port: string | number = PORT || 8000;
+const swaggerFile: string = `${process.cwd()}/swagger/index.json`;
+const swaggerData: string = fs.readFileSync(swaggerFile, 'utf8');
+const swaggerJSON = JSON.parse(swaggerData);
+const bodyParser = require('body-parser');
+export type RoutesType = () => Router;
+
+const preventPrototypePollution = (req: Request, res: Response, next: NextFunction) => {
+  // Check if the request contains polluted data and remove it
+  const pollutingKeys = ['__proto__', 'constructor', 'prototype'];
+  for (const key in req.query) {
+    if (pollutingKeys.includes(key)) {
+      delete req.query[key];
+    }
+  }
+  for (const key in req.body) {
+    if (pollutingKeys.includes(key)) {
+      delete req.query[key];
+    }
+  }
+  // Handle tokenData delete if we get it directly from request. This should be only created in auth.middleware.ts
+  delete req['tokenData'];
+  next();
+};
+
+function initializeMiddleWares() {
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(morgan(LOG_FORMAT, { stream }));
+  app.use(cors({ credentials: true, origin: true }));
+  app.use(hpp());
+  app.use(helmet({ crossOriginResourcePolicy: false }));
+  app.use(compression());
+  app.use(cookieParser());
+  app.use(requestIp.mw());
+  app.use(preventPrototypePollution);
+  app.disable('x-powered-by');
+  app.use('/assets', express.static(path.join(process.cwd(), '/public/assets')));
+  app.use('/public', async (req, res, next) => {
+    try {
+      const imagePath = path.join(process.cwd(), '/public', decodeURI(req.url));
+      if (fs.existsSync(imagePath)) {
+        if (decodeURI(req.url).endsWith('.jpg') || decodeURI(req.url).endsWith('.png')) {
+          const imageStream = await fsPromise.readFile(imagePath);
+          res.set('Content-Type', 'image/avif');
+          res.set('Cache-Control', 'public, max-age=3600');
+          try {
+            const buffer = await sharp(imageStream).avif().toBuffer();
+            res.send(buffer);
+          } catch (err) {
+            console.error('Error processing image with sharp:', err);
+            res.status(500).send('Error processing image');
+          }
+        } else {
+          next();
+        }
+      } else {
+        res.status(404).send('no file exits');
+      }
+    } catch (error) {
+      res.status(404).send(error);
+    }
+  });
+  app.use('/public', express.static(path.join(process.cwd(), '/public')));
+
+  app.use((req, res, next) => {
+    global.currentRequest = req;
+    global.currentResponse = res;
+    next();
+  });
+
+  app.use(async (req, res, next) => {
+    const method = req.method.toLowerCase();
+    if (method !== 'get') {
+      const t: Transaction = await db.transaction();
+      req.transaction = t;
+    }
+
+    next();
+  });
+
+  app.use((req, res, next) => {
+    const userLang = req.headers['accept-language'] as LanguageEnum;
+    const customLanguage = req.headers['accept-custom-language'] as LanguageEnum;
+    const availableLocales = Object.values(LanguageEnum);
+    // Check if the user's preferred language is available, otherwise, use the default
+    if (availableLocales.includes(customLanguage)) {
+      req.language = customLanguage;
+    } else if (availableLocales.includes(userLang)) {
+      req.language = userLang;
+    } else {
+      req.language = LanguageEnum.English;
+    }
+
+    if (req.originalUrl.includes('/cms')) {
+      req.language = req.headers['accept-language'] as LanguageEnumCMS;
+    }
+
+    const method = req.method.toLowerCase();
+    const timezone = req.headers['accept-timezone'] as string;
+    if (timeZones[timezone] && db?.options?.timezone && method === 'get') {
+      db.options.timezone = timeZones[timezone];
+      req.timezone = timezone;
+    }
+
+    next();
+  });
+}
+function initializeRoutes(routes: Routes[]) {
+  routes.forEach((route) => {
+    app.use('/api/v1', route.router);
+  });
+}
+
+function initializeSwagger() {
+  app.use('/api-docs/', swaggerUi.serve, swaggerUi.setup(swaggerJSON, null, null, null));
+}
+
+function initializeErrorHandling() {
+  app.use(errorMiddleware);
+}
+
+const createHealthRoute = () => {
+  app.get('/_health', (req: Request, res: Response) => {
+    res.status(200).send('ok');
+  });
+};
+
+function initializeCrons() {
+  require('@lib/crons/index.cron');
+}
+
+function handle404() {
+  app.use((req, res) => {
+    if (req.transaction) {
+      req.transaction.rollback();
+    }
+
+    res.status(500).send('Something went wrong');
+  });
+}
+
+export const initializeApp = async (apiRoutes: Routes[]) => {
+  initializeMiddleWares();
+  initializeRoutes(apiRoutes);
+  initializeSwagger();
+  createHealthRoute();
+  initializeErrorHandling();
+  initializeCrons();
+  Sentry.setupExpressErrorHandler(app);
+  initMySqlSequelize();
+  handle404();
+  const server = http.createServer(app);
+  socket.connect(server);
+  server.listen(port, () => {
+    logger.info(`=================================`);
+    logger.info(`======= ENV: ${env} ========`);
+    logger.info(`=================================`);
+  });
+};
