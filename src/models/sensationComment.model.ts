@@ -21,7 +21,7 @@ import {
 } from './interfaces/sensationComment.model.interface';
 import User from './user.model';
 import Sensation from './sensation.model';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 
 @Table({
   timestamps: true,

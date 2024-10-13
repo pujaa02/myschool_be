@@ -18,7 +18,7 @@ import { DataTypes } from 'sequelize';
 import { RequiredStudentAttributes, StudentsAttributes } from './interfaces/students.model.interface';
 import User from './user.model';
 import Class from './class.model';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 import ExamResults from './examResult.model';
 import StudentAttendance from './studentAttendance.model';
 

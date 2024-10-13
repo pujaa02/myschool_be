@@ -14,7 +14,7 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { RequiredSubjectAttributes, SubjectsAttributes } from './interfaces/subjects.model.interface';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 import ExamResults from './examResult.model';
 
 @Table({

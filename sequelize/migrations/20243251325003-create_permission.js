@@ -32,9 +32,9 @@ module.exports = {
                 using: 'BTREE',
                 transaction: t,
             });
-            await queryInterface.sequelize.query(`SELECT create_reference_table('permissions');`, {
-                transaction: t,
-            });
+            // await queryInterface.sequelize.query(`SELECT create_reference_table('permissions');`, {
+            //     transaction: t,
+            // });
         });
     },
 

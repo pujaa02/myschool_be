@@ -14,7 +14,7 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { ClassesAttributes, RequiredClassAttributes } from './interfaces/class.model.interface';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 import Student from './student.model';
 
 @Table({

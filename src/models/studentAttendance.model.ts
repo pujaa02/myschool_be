@@ -19,7 +19,7 @@ import {
   StudentAttendanceAttributes,
 } from './interfaces/studentAttendance.model.interface';
 import Student from './student.model';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 
 @Table({
   timestamps: true,

@@ -18,7 +18,7 @@ module.exports = {
                 },
                 { transaction: t },
             );
-            await queryInterface.sequelize.query(`SELECT create_reference_table('permission_groups')`, { transaction: t });
+            // await queryInterface.sequelize.query(`SELECT create_reference_table('permission_groups')`, { transaction: t });
         });
     },
 

@@ -1,5 +1,5 @@
 import { status } from './user.model.interface';
-import { RequiredKey } from '@/models/interfaces/common.model.interface';
+import { RequiredKey } from '../models/interfaces/common.model.interface';
 
 export interface RolesPermissionsAttributes {
   role_id: number;

@@ -14,8 +14,8 @@ import {
   BeforeCreate,
   BeforeUpdate,
 } from 'sequelize-typescript';
-import Role from '@/models/role.model';
-import User from '@/models/user.model';
+import Role from '../models/role.model';
+import User from '../models/user.model';
 import { RequiredUserRoleAttributes, UserRoleAttributes } from './interfaces/userRole.model.interface';
 import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 

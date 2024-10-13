@@ -18,7 +18,7 @@ import { ExamResultAttributes, RequiredExamResultsAttributes } from './interface
 import Student from './student.model';
 import Exam from './exam.model';
 import Subject from './subject.model';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 
 @Table({
   timestamps: true,

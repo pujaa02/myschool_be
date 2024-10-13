@@ -16,7 +16,7 @@ import {
 import { DataTypes } from 'sequelize';
 import { LeavesAttributes, RequiredLeaveAttributes } from './interfaces/leave.model.interface';
 import User from './user.model';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 
 @Table({
   timestamps: true,

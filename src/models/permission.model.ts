@@ -12,8 +12,8 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 import { status } from './interfaces/user.model.interface';
-import RolePermission from '@/models/rolesPermissions.model';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import RolePermission from '../models/rolesPermissions.model';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 import { PermissionAttributes } from './interfaces/permission.mode.interface';
 import PermissionGroup from './permissionGroup.model';
 

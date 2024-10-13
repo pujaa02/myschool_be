@@ -17,7 +17,7 @@ import { CellMmebersAttributes, RequiredCellMemberAttributes } from './interface
 import { DataTypes } from 'sequelize';
 import Committe from './committe.model';
 import User from './user.model';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 
 @Table({
   timestamps: true,

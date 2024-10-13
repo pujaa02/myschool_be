@@ -14,7 +14,7 @@ import {
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
 import { CommitteeAttributes, RequiredComiiteeAttributes } from './interfaces/committe.model.interface';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 import CellMember from './cellMember.model';
 
 @Table({

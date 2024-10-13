@@ -17,7 +17,7 @@ import {
 import { DataTypes } from 'sequelize';
 import { RequiredSensationAttributes, SensationAttributes } from './interfaces/sensation.model.interface';
 import User from './user.model';
-import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
 import SensationComment from './sensationComment.model';
 import SensationLike from './sensationLike.model';
 
