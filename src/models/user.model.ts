@@ -11,9 +11,20 @@ import {
   AutoIncrement,
   Unique,
   ForeignKey,
+  BelongsTo,
+  BelongsToMany,
+  HasMany
 } from 'sequelize-typescript';
-import { DataTypes } from 'sequelize';
+import { DataTypes, HasManyCreateAssociationMixin } from 'sequelize';
 import { RequiredUserAttributes, USER_STATUS, UserAttributes } from './interfaces/user.model.interface';
+import Role from './role.model';
+import UserRole from './userRole.model';
+import CellMember from './cellMember.model';
+import Leave from './leave.model';
+import Sensation from './sensation.model';
+import SensationComment from './sensationComment.model';
+import SensationLike from './sensationLike.model';
+import Student from './student.model';
 @Table({
   timestamps: true,
   paranoid: true,
@@ -70,11 +81,11 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   @Column
   city: string;
 
-  @Column(DataTypes.INTEGER)
-  state_id: number;
+  @Column(DataTypes.STRING)
+  state: string;
 
-  @Column(DataTypes.INTEGER)
-  country_id: number;
+  @Column(DataTypes.STRING)
+  country: string;
 
   @Column
   zip: string;
@@ -102,9 +113,37 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   @DeletedAt
   deleted_at: Date;
 
-  // readonly toJSON = () => {
-  //   const values = Object.assign({}, this.get());
-  //   delete values.password;
-  //   return values;
-  // };
+  // =========== Associations =============
+
+  @BelongsTo(() => User, { foreignKey: 'added_by', constraints: false, as: 'added_by_user' })
+  added_by_user: User;
+
+  @BelongsToMany(() => Role, {
+    through: () => UserRole,
+    foreignKey: 'user_id',
+    otherKey: 'role_id',
+    constraints: false,
+
+  })
+  roles: Role[];
+
+  createUser_role: HasManyCreateAssociationMixin<UserRole, 'user_id'>;
+
+  @HasMany(() => CellMember, { foreignKey: 'user_id', constraints: false })
+  cellMember: CellMember[];
+
+  @HasMany(() => Leave, { foreignKey: 'user_id', constraints: false })
+  leave: Leave[];
+
+  @HasMany(() => Sensation, { foreignKey: 'user_id', constraints: false })
+  sensation: Sensation[];
+
+  @HasMany(() => SensationComment, { foreignKey: 'user_id', constraints: false })
+  sensationComment: SensationComment[];
+
+  @HasMany(() => SensationLike, { foreignKey: 'user_id', constraints: false })
+  sensationlLike: SensationLike[];
+
+  @HasMany(() => Student, { foreignKey: 'user_id', constraints: false })
+  student: Student[];
 }

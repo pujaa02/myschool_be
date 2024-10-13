@@ -1,5 +1,9 @@
-import { RequiredKey } from './common.interface';
+import { RequiredKey } from './common.model.interface';
 export declare enum USER_STATUS {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE"
+}
+export declare enum status {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE"
 }
@@ -22,6 +26,7 @@ export interface UserAttributes {
     mobile?: string;
     profile_image?: string;
     zip?: string;
+    added_by?: number;
     first_name?: string;
     last_name?: string;
     full_name?: string;
@@ -30,3 +35,4 @@ export interface UserAttributes {
     deleted_at?: Date | string;
 }
 export type RequiredUserAttributes = RequiredKey<UserAttributes, 'email'>;
+//# sourceMappingURL=user.model.interface.d.ts.map

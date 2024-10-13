@@ -5,3 +5,4 @@ declare const stream: {
     write: (message: string) => void;
 };
 export { logger, stream, consoleLogFormat };
+//# sourceMappingURL=logger.d.ts.map

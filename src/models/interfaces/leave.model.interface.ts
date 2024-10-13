@@ -1,4 +1,4 @@
-import { RequiredKey } from './common.interface';
+import { RequiredKey } from './common.model.interface';
 
 export interface LeavesAttributes {
   id?: number;

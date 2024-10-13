@@ -14,6 +14,11 @@ import SensationLike from './sensationLike.model';
 import Student from './student.model';
 import StudentAttendance from './studentAttendance.model';
 import Subject from './subject.model';
+import Role from './role.model';
+import RolePermission from './rolesPermissions.model';
+import Permission from './permission.model';
+import PermissionGroup from './permissionGroup.model';
+import UserRole from './userRole.model';
 
 let db: Sequelize;
 
@@ -37,6 +42,11 @@ export const initSequelize = () => {
     Student,
     StudentAttendance,
     Subject,
+    UserRole,
+    Role,
+    RolePermission,
+    Permission,
+    PermissionGroup,
   ]);
 
   return sequelize;

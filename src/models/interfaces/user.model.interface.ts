@@ -1,5 +1,10 @@
-import { RequiredKey } from './common.interface';
+import { RequiredKey } from './common.model.interface';
 export enum USER_STATUS {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+export enum status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }

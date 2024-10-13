@@ -1,16 +1,21 @@
 import {
   AllowNull,
   AutoIncrement,
+  BeforeCreate,
+  BeforeUpdate,
   Column,
   CreatedAt,
   DeletedAt,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
 import { DataTypes } from 'sequelize';
-import { ExamAttributes, RequiredExamAttributes } from './interfaces/exam.interface';
+import { ExamAttributes, RequiredExamAttributes } from './interfaces/exam.model.interface';
+import { sanitizeHtmlFieldsAllModules } from '@/helper/common.helper';
+import ExamResults from './examResult.model';
 
 @Table({
   timestamps: true,
@@ -35,4 +40,13 @@ export default class Exam extends Model<ExamAttributes, RequiredExamAttributes> 
 
   @DeletedAt
   deleted_at: Date;
+
+  @HasMany(() => ExamResults, { foreignKey: 'exam_id', constraints: false })
+  examResult: ExamResults[];
+
+  @BeforeCreate
+  @BeforeUpdate
+  static sanitizeHtmlFields(exam: Exam) {
+    sanitizeHtmlFieldsAllModules(exam);
+  }
 }
