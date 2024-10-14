@@ -26,3 +26,7 @@ export enum FeaturesEnum {
   Leave = 'Leave',
   Committe = 'Committe',
 }
+
+export enum language {
+  en = 'english',
+}
