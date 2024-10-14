@@ -1,6 +1,7 @@
 import { RoleEnum } from '@/common/constants/enum.constant';
 import { toastMessageData } from '@/common/constants/messages.constant';
-import { logger } from '@/utils/logger';
+import { logger } from '@/common/util/logger';
+import roleRepository from '@/modules/role/repository/role.repository';
 
 const addRoles = async () => {
   const toastData = toastMessageData();

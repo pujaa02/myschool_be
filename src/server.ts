@@ -1,9 +1,9 @@
 import express, { Application } from 'express';
-import { logger } from './utils/logger';
 const app: Application = express();
 import bodyParser from 'body-parser';
 import db from './models';
 import { PORT } from './config';
+import { logger } from './common/util/logger';
 const port = PORT || 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
