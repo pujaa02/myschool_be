@@ -1,11 +1,12 @@
 {
   "compileOnSave": false,
-  // "ts-node": {
-  //   "require": ["tsconfig-paths/register"],
-  //   "transpileOnly": true
-  // },
+  "ts-node": {
+    // "require": ["tsconfig-paths/register"],
+    "transpileOnly": true
+  },
   "compilerOptions": {
-    "target": "ES2021",
+    "target": "es2017",
+
     "typeRoots": ["node_modules/@types"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -14,7 +15,6 @@
     "pretty": true,
     "sourceMap": true,
     "declaration": true,
-    "declarationMap": true,
     "outDir": "dist",
     "allowJs": true,
     "noEmit": false,
@@ -24,26 +24,25 @@
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["DOM", "ES2021.String", "esnext.asynciterable"],
+    "lib": ["DOM", "es2021", "esnext.asynciterable"],
     "paths": {
-      "*": ["overWriteTypes/"],
+      "*": ["customTypes/"],
       "@/*": ["*"],
-      "@data-migrations/*": ["data-migrations/*"],
-      "@modules/*": ["modules/*"],
-      "@middlewares/*": ["middlewares/*"], 
-      "@lib/*": ["common/lib/*"],
+      "@lib/*": ["lib/*"],
+      "@dtos/*": ["dtos/*"],
+      "@utils/*": ["utils/*"],
+      "@routes/*": ["routes/*"],
       "@config": ["config"],
-      "@constants/*": ["lib/common/constants/*"],
-   
-      "@sequelizeDir/*": ["sequelizeDir/*"],
-      "@messages": ["lib/common/constants/messages.constants"],
-     
-      "@common/*": ["common/*"],
-      "@helpers/*": ["common/helpers/*"],
-      "@logger": ["common/utils/logger/index.ts"],
-      "@exceptions": ["common/helpers/response/HttpException.ts"],
+      "@services/*": ["services/*"],
+      "@constants/*": ["constants/*"],
+      "@exceptions/*": ["exceptions/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@controllers/*": ["controllers/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@workers/*": ["workers/*"],
+      "@models/*": ["models/*"]
     }
   },
-  "include": ["src/**/*.ts",  ".env", "src/modules/socket/route", "src/lib/common/database/attributeSetter.helper.ts", "src/modules/courseRooms/repository/courseRooms.repository.ts"],
+  "include": ["src/**/*.ts", "src/**/*.json", ".env"],
   "exclude": ["node_modules", "src/http", "src/logs", "src/tests"]
 }

@@ -1,22 +1,22 @@
+import { DataTypes } from 'sequelize';
 import {
+  AllowNull,
+  AutoIncrement,
   Column,
   CreatedAt,
   DeletedAt,
   Model,
-  Table,
-  UpdatedAt,
-  AllowNull,
   PrimaryKey,
-  AutoIncrement,
+  Table,
   Unique,
+  UpdatedAt,
 } from 'sequelize-typescript';
-import { DataTypes } from 'sequelize';
-import { PermissionAttributes, RequiredPermissionAttributes } from './interfaces/permission.mode.interface';
+import { FeatureAttributes, RequiredFeatureAttributes } from './interfaces/feature.model.interface';
 
 @Table({
   timestamps: true,
   paranoid: true,
-  tableName: 'permissions',
+  tableName: 'features',
   indexes: [
     {
       fields: ['name'],
@@ -27,7 +27,7 @@ import { PermissionAttributes, RequiredPermissionAttributes } from './interfaces
     },
   ],
 })
-export default class Permission extends Model<PermissionAttributes, RequiredPermissionAttributes> {
+export default class Feature extends Model<FeatureAttributes, RequiredFeatureAttributes> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)

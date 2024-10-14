@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.createTable(
-        'permissions',
+        'features',
         {
           id: { type: Sequelize.INTEGER, allowNull: false, primaryKey: true, autoIncrement: true },
           name: { type: Sequelize.STRING, allowNull: false, unique: true },
@@ -15,7 +15,7 @@ module.exports = {
         },
         { transaction: t },
       );
-      await queryInterface.addIndex('permissions', {
+      await queryInterface.addIndex('features', {
         name: 'unique_name_uk',
         fields: ['name'],
         unique: true,
@@ -29,7 +29,7 @@ module.exports = {
 
   async down(queryInterface) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.dropTable('permissions', { transaction: t, cascade: true });
+      await queryInterface.dropTable('features', { transaction: t, cascade: true });
     });
   },
 };

@@ -1,16 +1,11 @@
 import { RequiredKey } from './common.model.interface';
-import RolePermission from '../rolesPermissions.model';
-import { UserRoleAttributes } from './userRole.model.interface';
 
 export interface RoleAttributes {
-  id: number;
-  name: string;
-  description: string;
-  created_at?: Date;
-  updated_at?: Date;
-  deleted_at?: Date;
-  role_permissions?: Partial<RolePermission>[];
-  user_roles?: Partial<UserRoleAttributes>[];
+  id?: number;
+  name?: string;
+  created_at?: Date | string;
+  updated_at?: Date | string;
+  deleted_at?: Date | string;
 }
 
 export type RequiredRoleAttributes = RequiredKey<RoleAttributes, 'name'>;

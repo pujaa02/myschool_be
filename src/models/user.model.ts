@@ -13,12 +13,11 @@ import {
   ForeignKey,
   BelongsTo,
   BelongsToMany,
-  HasMany
+  HasMany,
 } from 'sequelize-typescript';
 import { DataTypes, HasManyCreateAssociationMixin } from 'sequelize';
 import { RequiredUserAttributes, USER_STATUS, UserAttributes } from './interfaces/user.model.interface';
 import Role from './role.model';
-import UserRole from './userRole.model';
 import CellMember from './cellMember.model';
 import Leave from './leave.model';
 import Sensation from './sensation.model';
@@ -104,6 +103,10 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   @Column
   profile_image: string;
 
+  @ForeignKey(() => Role)
+  @Column
+  role_id: number;
+
   @CreatedAt
   created_at: Date;
 
@@ -118,16 +121,8 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   @BelongsTo(() => User, { foreignKey: 'added_by', constraints: false, as: 'added_by_user' })
   added_by_user: User;
 
-  @BelongsToMany(() => Role, {
-    through: () => UserRole,
-    foreignKey: 'user_id',
-    otherKey: 'role_id',
-    constraints: false,
-
-  })
-  roles: Role[];
-
-  createUser_role: HasManyCreateAssociationMixin<UserRole, 'user_id'>;
+  @BelongsTo(() => Role, { foreignKey: 'role_id', constraints: false, as: 'role' })
+  role: Role;
 
   @HasMany(() => CellMember, { foreignKey: 'user_id', constraints: false })
   cellMember: CellMember[];

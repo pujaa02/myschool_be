@@ -1,47 +1,60 @@
 import { DataTypes } from 'sequelize';
-import Permission from './permission.model';
-import { status } from './interfaces/user.model.interface';
 import {
-  BeforeCreate,
-  BeforeUpdate,
+  AllowNull,
+  AutoIncrement,
   BelongsTo,
   Column,
   CreatedAt,
   DeletedAt,
-  ForeignKey,
   Model,
+  PrimaryKey,
   Table,
+  Unique,
   UpdatedAt,
 } from 'sequelize-typescript';
+import Permission from './permission.model';
 import Role from './role.model';
-import { sanitizeHtmlFieldsAllModules } from '../helper/common.helper';
-import {
-  RequiredRolesPermissionsAttributes,
-  RolesPermissionsAttributes,
-} from './interfaces/rolesPermissions.model.interface';
+import { RolesPermissionsAttributes } from './interfaces/rolesPermissions.model.interface';
+import Feature from './feature.model';
 
 @Table({
   timestamps: true,
   paranoid: true,
   tableName: 'role_permissions',
+  indexes: [],
 })
-class RolePermission extends Model<RolesPermissionsAttributes, RequiredRolesPermissionsAttributes> {
-  @ForeignKey(() => Role)
-  @Column({ allowNull: false })
+export default class RolePermission extends Model<RolesPermissionsAttributes> {
+  @PrimaryKey
+  @AutoIncrement
+  @AllowNull(false)
+  @Column(DataTypes.INTEGER)
+  id: number;
+
+  @Unique
+  @AllowNull(false)
+  @Column(DataTypes.STRING)
+  role_permission_key: number;
+
+  @Column(DataTypes.INTEGER)
   role_id: number;
 
-  @ForeignKey(() => Permission)
-  @Column({ allowNull: false })
+  @Column(DataTypes.INTEGER)
+  feature_id: number;
+
+  @Column(DataTypes.INTEGER)
   permission_id: number;
 
-  @Column({ type: DataTypes.ENUM(...Object.values(status)), defaultValue: status.ACTIVE, allowNull: false })
-  status: status;
+  @BelongsTo(() => Role, { foreignKey: 'role_id', constraints: false, as: 'role' })
+  name: Role;
 
-  @BelongsTo(() => Permission, { foreignKey: 'permission_id' })
-  permission: Permission;
+  @Column(DataTypes.STRING)
+  access: string;
 
-  @BelongsTo(() => Role, { foreignKey: 'role_id' })
-  role: Role;
+  @BelongsTo(() => Permission, { foreignKey: 'permission_id', constraints: false, as: 'permission' })
+  permission_id_role_permission: Permission;
+
+  @BelongsTo(() => Feature, { foreignKey: 'feature_id', constraints: false, as: 'feature' })
+  feature_id_role_permission: Feature;
 
   @CreatedAt
   created_at: Date;
@@ -51,12 +64,4 @@ class RolePermission extends Model<RolesPermissionsAttributes, RequiredRolesPerm
 
   @DeletedAt
   deleted_at: Date;
-
-  @BeforeCreate
-  @BeforeUpdate
-  static sanitizeHtmlFields(rolePermission: RolePermission) {
-    sanitizeHtmlFieldsAllModules(rolePermission);
-  }
 }
-
-export default RolePermission;
