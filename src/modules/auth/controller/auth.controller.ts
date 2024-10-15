@@ -1,16 +1,16 @@
-import { generalResponse } from '@/common/helpers/response/generalResponse';
-import { catchAsync } from '@/common/utils';
 import PermissionRepo from '@/modules/permission/repository/permission.repository';
 import RoleRepo from '@/modules/role/repository/role.repository';
 import RolePermissionRepo from '@/modules/rolePermission/repository/rolePermission.repository';
 import ManagerController from '@/modules/user/controller/trainer.controller';
-import Feature from '@/sequelizeDir/models/feature.model';
-import Permission from '@/sequelizeDir/models/permission.model';
-import Role from '@/sequelizeDir/models/role.model';
-import AuthRepo from '@modules/auth/repository/auth.repository';
 import { Request, Response } from 'express';
 import { Sequelize } from 'sequelize';
 import { LoginInterface } from '../interfaces/auth.interfaces';
+import { generalResponse } from '@/common/helper/response/generalResponse';
+import { catchAsync } from '@/common/util';
+import Feature from '@/models/feature.model';
+import Permission from '@/models/permission.model';
+import Role from '@/models/role.model';
+import AuthRepo from '../repository/auth.repository';
 
 export default class AuthController {
   private authRepository = new AuthRepo();
@@ -106,7 +106,13 @@ export default class AuthController {
 
     const trainerRating = await this.trainerRepository.getAllSurveyRating(req, res);
 
-    return generalResponse(req, res, { user, roleAndPermission, role, permission, trainerRating }, 'USER_FETCHED', false);
+    return generalResponse(
+      req,
+      res,
+      { user, roleAndPermission, role, permission, trainerRating },
+      'USER_FETCHED',
+      false,
+    );
   });
 
   /**

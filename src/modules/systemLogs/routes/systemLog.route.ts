@@ -1,6 +1,4 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constants';
 import { Routes } from '@/common/interfaces/general/routes.interface';
-import { paramsSlugSchema } from '@/common/validations';
 import authMiddleware from '@/middlewares/auth.middleware';
 import checkRoleMiddleware from '@/middlewares/checkRole.middleware';
 import { fileUpload } from '@/middlewares/multer.middleware';
@@ -8,6 +6,8 @@ import validationMiddleware from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 import LogController from '../controller/systemLog.controller';
 import { createSystemLogSchema, getSystemLogSchema } from '../validations/systemLog.validation';
+import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
+import { paramsSlugSchema } from '@/common/validations';
 class LogRoute implements Routes {
   public path = '/system-logs';
   public router = Router();

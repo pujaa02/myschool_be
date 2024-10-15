@@ -25,6 +25,7 @@ export enum FeaturesEnum {
   Sensation = 'Sensation',
   Leave = 'Leave',
   Committe = 'Committe',
+  SystemLog = 'SystemLog',
 }
 
 export enum language {

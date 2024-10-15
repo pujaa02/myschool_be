@@ -1,9 +1,9 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constants';
+import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
 import { Routes } from '@/common/interfaces/general/routes.interface';
 import authMiddleware from '@/middlewares/auth.middleware';
 import checkRoleMiddleware from '@/middlewares/checkRole.middleware';
-import RolePermissionController from '@modules/rolePermission/controller/rolePermission.controller';
 import { Router } from 'express';
+import RolePermissionController from '../controller/rolePermission.controller';
 export default class RolePermissionRoute implements Routes {
   public path = '/role-permission';
   public router = Router();

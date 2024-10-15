@@ -1,9 +1,9 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constants';
 import { Routes } from '@/common/interfaces/general/routes.interface';
 import authMiddleware from '@/middlewares/auth.middleware';
 import checkRoleMiddleware from '@/middlewares/checkRole.middleware';
-import FeatureController from '@modules/feature/controller/feature.controller';
 import { Router } from 'express';
+import FeatureController from '../controller/feature.controller';
+import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
 
 export default class FeatureRoute implements Routes {
   public path = '/feature';

@@ -1,6 +1,6 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constants';
-import { HttpException } from '@/common/helpers/response/httpException';
-import { catchAsync } from '@/common/utils';
+import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
+import { HttpException } from '@/common/helper/response/httpException';
+import { catchAsync } from '@/common/util';
 import RolePermissionRepo from '@/modules/rolePermission/repository/rolePermission.repository';
 import { Request, RequestHandler } from 'express';
 import _ from 'lodash';
@@ -11,7 +11,13 @@ const checkRoleMiddleware = (feature: FeaturesEnum, permission: PermissionEnum):
     if (data) return next();
     checkRoleParams(feature, req);
     const rolePermissionRepo = new RolePermissionRepo();
-    const result = await rolePermissionRepo.validateRolePermission(req.tokenData?.user?.role_id, feature, permission, req, next);
+    const result = await rolePermissionRepo.validateRolePermission(
+      req.tokenData?.user?.role_id,
+      feature,
+      permission,
+      req,
+      next,
+    );
     if (result) {
       // delete req.body?.role;
       next();
@@ -23,7 +29,13 @@ const checkRoleMiddleware = (feature: FeaturesEnum, permission: PermissionEnum):
 
 export const checkRoleMiddlewareData = async (req, next, feature: FeaturesEnum, permission: PermissionEnum) => {
   const rolePermissionRepo = new RolePermissionRepo();
-  const result = await rolePermissionRepo.validateRolePermission(req.tokenData?.user?.role_id, feature, permission, req, next);
+  const result = await rolePermissionRepo.validateRolePermission(
+    req.tokenData?.user?.role_id,
+    feature,
+    permission,
+    req,
+    next,
+  );
   if (result) return true;
   else return false;
 };
@@ -37,7 +49,8 @@ export const checkRoleParams = (feature: FeaturesEnum, req: Request) => {
 };
 
 export const checkIfItsRole = (req: Request) => {
-  const condition1 = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method.toUpperCase()) && !_.isUndefined(req?.body?.profile);
+  const condition1 =
+    ['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method.toUpperCase()) && !_.isUndefined(req?.body?.profile);
   const condition2 = ['GET'].includes(req.method.toUpperCase()) && !_.isUndefined(req?.query?.profile);
 
   delete req.body?.profile;

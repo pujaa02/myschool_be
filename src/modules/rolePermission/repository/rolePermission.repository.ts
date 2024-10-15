@@ -1,14 +1,15 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constants';
-import { HttpException } from '@/common/helpers/response/httpException';
-import { parse } from '@/common/utils';
+import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
+import { HttpException } from '@/common/helper/response/httpException';
 import { checkRoleMiddlewareData } from '@/middlewares/checkRole.middleware';
+import Feature from '@/models/feature.model';
+import Permission from '@/models/permission.model';
+import Role from '@/models/role.model';
+import RolePermission from '@/models/rolesPermissions.model';
 import BaseRepository from '@/modules/common/base.repository';
-import Feature from '@/sequelizeDir/models/feature.model';
-import Permission from '@/sequelizeDir/models/permission.model';
-import RolePermission from '@/sequelizeDir/models/role-permission.model';
-import Role from '@/sequelizeDir/models/role.model';
+
 import { NextFunction, Request } from 'express';
 import _ from 'lodash';
+import { parse } from 'path';
 export default class RolePermissionRepo extends BaseRepository<RolePermission> {
   constructor() {
     super(RolePermission.name);

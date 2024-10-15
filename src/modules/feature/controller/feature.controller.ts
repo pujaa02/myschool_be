@@ -1,12 +1,9 @@
-import { queryBuildCases } from '@/common/constants/enum.constants';
-import { getAllDetails } from '@/common/lib/query/querySetter/database.helper';
-import { catchAsync } from '@/common/utils';
-import Feature from '@/sequelizeDir/models/feature.model';
-import SystemLogs from '@/sequelizeDir/models/systemLogs.model';
-import { generalResponse } from '@helpers/response/generalResponse';
-import FeatureRepo from '@modules/feature/repository/feature.repository';
+import { generalResponse } from '@/common/helper/response/generalResponse';
+import { catchAsync } from '@/common/util';
+import Feature from '@/models/feature.model';
 import { Request, Response } from 'express';
 import _ from 'lodash';
+import FeatureRepo from '../repository/feature.repository';
 
 export default class FeatureController {
   private featureRepository = new FeatureRepo();

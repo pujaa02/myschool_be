@@ -20,9 +20,21 @@
   "TOKEN_EXPIRED": "Token Expired, Try Again",
   "LOGIN_RESTRICTED": "Your login access has been restricted. Please contact admin",
   "USER_UNIQUE_EMAIL_ERROR": "User Is Already Exist On This Email",
-  "NOT_FOUND": "Not Found",
+   "MODULE_ACCESS_DENIED": "You Have Not Permission To Access This Module",
+   "ROLE_NOT_FOUND": "Role Not Found",
+    "REGISTER_SUCCESS": "Registered Successfully ! Login credentials has been send to your email",
+    "USER_FETCHED": "Logged in User Fetched Successfully",
+      "NOT_FOUND": "Not Found",
   "INVALID": "Invalid Role Provided",
   "INVALID_DATA": "Invalid Data Provided",
   "LOGIN_SUCCESS": "Logged In Successfully",
-  "LOGIN_OUT_SUCCESS": "Logged Out Successfully"
+  "LOGIN_OUT_SUCCESS": "Logged Out Successfully",
+  "PASSWORD_ERROR": "Credentials Wrong.",
+  "SET_PASSWORD_SUCCESS": "Password Set Successfully",
+   "OTP_VERIFIED_SUCCESS": "OTP Verified Successfully.",
+    "OLD_PASSWORD": "Old Password Is Incorrect",
+  "CHANGE_PASSWORD_SUCCESS": "Password Changed Successfully"
+
+
+
 }

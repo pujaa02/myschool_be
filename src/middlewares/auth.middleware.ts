@@ -3,7 +3,6 @@ import { HttpException } from '@/common/helper/response/httpException';
 import { catchAsync } from '@/common/util';
 import { USER_STATUS } from '@/models/interfaces/user.model.interface';
 import LanguageModel from '@/models/language.model';
-import Role from '@/models/role.model';
 import User from '@/models/user.model';
 import { UserType } from '@/modules/auth/interfaces/auth.interfaces';
 import UserRepo from '@/modules/common/user.repository';
@@ -36,7 +35,15 @@ const authMiddleware = catchAsync((req: Request, res: Response, next: NextFuncti
             return next();
           }
         } catch (error) {
-          return generalResponse(req, res, error.message ? error?.message : error, 'UNAUTHORIZED_ERROR', false, 'error', 401);
+          return generalResponse(
+            req,
+            res,
+            error.message ? error?.message : error,
+            'UNAUTHORIZED_ERROR',
+            false,
+            'error',
+            401,
+          );
         }
       })(req, res, next);
     }
