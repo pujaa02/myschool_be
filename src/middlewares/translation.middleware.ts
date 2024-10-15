@@ -1,8 +1,6 @@
-import { parse } from '@/common/utils';
-import { GOOGLE_APPLICATION_CREDENTIALS } from '@/config';
-import User from '@/sequelizeDir/models/user.model';
+import { parse } from '@/common/util';
+import User from '@/models/user.model';
 import { readFileSync } from 'fs';
-import { google } from 'googleapis';
 import _ from 'lodash';
 
 import path from 'path';
@@ -87,32 +85,32 @@ export async function translateJson(jsonData, targetLanguage, fieldToConvert: st
     return reconstructObject(jsonData);
 }
 
-export async function getTranslateAuthClient() {
-    // Replace 'YOUR_PROJECT_ID' and 'YOUR_API_KEY' with your actual Google Cloud project ID and API key.
-    const keyFilePath = path.join(GOOGLE_APPLICATION_CREDENTIALS);
+// export async function getTranslateAuthClient() {
+//     // Replace 'YOUR_PROJECT_ID' and 'YOUR_API_KEY' with your actual Google Cloud project ID and API key.
+//     const keyFilePath = path.join(GOOGLE_APPLICATION_CREDENTIALS);
 
-    const credentials = JSON.parse(readFileSync(keyFilePath, 'utf8'));
-    const authClient = new google.auth.JWT(
-        credentials.client_email,
-        null,
-        credentials.private_key,
-        ['https://www.googleapis.com/auth/cloud-translation', 'https://www.googleapis.com/auth/cloud-platform'],
-        'carolina.boarini@proleven.com',
-    );
+//     const credentials = JSON.parse(readFileSync(keyFilePath, 'utf8'));
+//     const authClient = new google.auth.JWT(
+//         credentials.client_email,
+//         null,
+//         credentials.private_key,
+//         ['https://www.googleapis.com/auth/cloud-translation', 'https://www.googleapis.com/auth/cloud-platform'],
+//         'carolina.boarini@proleven.com',
+//     );
 
-    await new Promise((reslove, reject) => {
-        authClient.authorize((err, _tokens) => {
-            if (err) {
-                reject(`Error authorizing JWT client:, ${err}`);
-                console.error('Error authorizing JWT client:', err);
-                return;
-            }
-            reslove(authClient);
-        });
-    });
-    const translate = google.translate({ version: 'v2', auth: authClient });
-    return translate;
-}
+//     await new Promise((reslove, reject) => {
+//         authClient.authorize((err, _tokens) => {
+//             if (err) {
+//                 reject(`Error authorizing JWT client:, ${err}`);
+//                 console.error('Error authorizing JWT client:', err);
+//                 return;
+//             }
+//             reslove(authClient);
+//         });
+//     });
+//     const translate = google.translate({ version: 'v2', auth: authClient });
+//     return translate;
+// }
 
 async function batchTranslate(translate, texts, targetLanguage) {
     if (targetLanguage === 'italian') targetLanguage = 'it';

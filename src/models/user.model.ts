@@ -16,7 +16,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { DataTypes, HasManyCreateAssociationMixin } from 'sequelize';
-import { RequiredUserAttributes, USER_STATUS, UserAttributes } from './interfaces/user.model.interface';
+import { DATE_FORMAT, RequiredUserAttributes, USER_STATUS, UserAttributes } from './interfaces/user.model.interface';
 import Role from './role.model';
 import CellMember from './cellMember.model';
 import Leave from './leave.model';
@@ -24,6 +24,7 @@ import Sensation from './sensation.model';
 import SensationComment from './sensationComment.model';
 import SensationLike from './sensationLike.model';
 import Student from './student.model';
+import { LanguageEnum } from '@/common/interfaces/general/general.interface';
 @Table({
   timestamps: true,
   paranoid: true,
@@ -51,16 +52,36 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   last_name: string;
 
   @Column(DataTypes.STRING)
-  full_name: string;
+  secret_2fa: string;
+
+  @Column(DataTypes.BOOLEAN)
+  two_factor_enabled: boolean;
+
+  @Column(DataTypes.VIRTUAL)
+  get full_name() {
+    return `${this.getDataValue('first_name') || ''} ${this.getDataValue('last_name') || ''}`.trim();
+  }
+
+  @AllowNull(false)
+  @Column(DataTypes.STRING)
+  username: string;
 
   @Column(DataTypes.STRING)
-  phone: string;
+  contact: string;
 
   @Column
-  mobile: string;
+  profile_image: string;
 
   @Column(DataTypes.TEXT)
   password: string;
+
+  @ForeignKey(() => User)
+  @Column(DataTypes.INTEGER)
+  added_by: number;
+
+  @Default(DATE_FORMAT)
+  @Column(DataTypes.STRING)
+  date_format: string;
 
   @Column(DataTypes.STRING)
   timezone: string;
@@ -80,32 +101,39 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   @Column
   city: string;
 
-  @Column(DataTypes.STRING)
-  state: string;
-
-  @Column(DataTypes.STRING)
+  @Column
   country: string;
+
+  @Column
+  state: string;
 
   @Column
   zip: string;
 
-  @ForeignKey(() => User)
-  @Column(DataTypes.INTEGER)
-  added_by: number;
-
+  @Default(USER_STATUS.ACTIVE)
   @Column(DataTypes.ENUM(...Object.values(USER_STATUS)))
   active: USER_STATUS;
+
+  @Column
+  last_login_time: Date;
 
   @Default(false)
   @Column(DataTypes.BOOLEAN)
   verified: boolean;
 
-  @Column
-  profile_image: string;
-
   @ForeignKey(() => Role)
   @Column
   role_id: number;
+
+  @Default(false)
+  @Column(DataTypes.BOOLEAN)
+  is_head: boolean;
+
+  @Column({
+    defaultValue: LanguageEnum.English,
+    type: DataTypes.ENUM(...Object.values(LanguageEnum)),
+  })
+  language: LanguageEnum;
 
   @CreatedAt
   created_at: Date;
@@ -115,6 +143,16 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
 
   @DeletedAt
   deleted_at: Date;
+
+  @Column
+  pass_logs: string;
+
+  @Column
+  parent_table_id: number;
+
+
+  @Column
+  last_active_time: Date | null;
 
   // =========== Associations =============
 

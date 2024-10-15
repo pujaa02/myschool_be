@@ -2,9 +2,9 @@
 import Joi from 'joi';
 
 // ** Others **
-import { errorMessage } from '@/common/constants/validation.constants';
 import _ from 'lodash';
 import { LanguageEnum } from '../interfaces/general/general.interface';
+import { errorMessage } from '../constants/validation.constant';
 
 export const joiCommon = {
   joiString: Joi.string()

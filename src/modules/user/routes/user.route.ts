@@ -1,4 +1,3 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constants';
 import { Routes } from '@/common/interfaces/general/routes.interface';
 import authMiddleware from '@/middlewares/auth.middleware';
 import checkRoleMiddleware from '@/middlewares/checkRole.middleware';
@@ -14,6 +13,7 @@ import {
   updateUserSchema,
   userUsernameParamSchema,
 } from '../validationSchema/user.validation';
+import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
 
 export default class UserRoute implements Routes {
   public path = '/users';
@@ -42,16 +42,12 @@ export default class UserRoute implements Routes {
         validationMiddleware(updateUserSchema, 'body'),
         this.userController.updateUser,
       )
-      .get(
-        authMiddleware,
-        validationMiddleware(getUserSchema, 'query'),
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
-        this.userController.getUserDetails,
-      );
-
-    this.router
-      .route(`${this.path}/dropdown`)
-      .get(authMiddleware, validationMiddleware(getUserSchema, 'query'), this.userController.getUserDropdownData);
+      // .get(
+      //   authMiddleware,
+      //   validationMiddleware(getUserSchema, 'query'),
+      //   checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
+      //   this.userController.getUserDetails,
+      // );
 
     this.router
       .route(`${this.path}/:username`)
@@ -64,33 +60,17 @@ export default class UserRoute implements Routes {
 
         this.userController.updateUser,
       )
-      .get(
-        authMiddleware,
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
-        validationMiddleware(userUsernameParamSchema, 'params'),
-        this.userController.getUserDetailsById,
-      )
+      // .get(
+      //   authMiddleware,
+      //   checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
+      //   validationMiddleware(userUsernameParamSchema, 'params'),
+      //   this.userController.getUserDetailsById,
+      // )
       .delete(
         authMiddleware,
         checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Delete),
         validationMiddleware(userUsernameParamSchema, 'params'),
         this.userController.deleteUser,
-      );
-
-    this.router
-      .route(`${this.path}/:username/social-connections`)
-      .get(
-        authMiddleware,
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
-        validationMiddleware(userUsernameParamSchema, 'params'),
-        this.userController.getUserSocialAccounts,
-      )
-      .delete(
-        authMiddleware,
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Delete),
-        validationMiddleware(userUsernameParamSchema, 'params'),
-        validationMiddleware(deleteUserSocialAccountSchema, 'body'),
-        this.userController.deleteUserSocialAccounts,
       );
 
     this.router

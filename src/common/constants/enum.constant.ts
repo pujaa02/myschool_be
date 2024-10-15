@@ -31,3 +31,8 @@ export enum FeaturesEnum {
 export enum language {
   en = 'english',
 }
+
+export const queryBuildCases = {
+  default: 'default',
+  getAllRoleWiseData: 'getAllRoleWiseData',
+};

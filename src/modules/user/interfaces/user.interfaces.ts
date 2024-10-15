@@ -1,11 +1,10 @@
+import User from '@/models/user.model';
 import { TokenDataInterface } from '@/modules/auth/interfaces/auth.interfaces';
-import { CompanyUpdateReqInterface } from '@/modules/company/interfaces/company.interface';
-import User from '@/sequelizeDir/models/user.model';
 import { Request } from 'express';
 import { Transaction } from 'sequelize';
 
 export interface BuildUserArgs {
-  data: Request['body'] | CompanyUpdateReqInterface['companyUserDetails'];
+  data: Request['body'] ;
   tokenData: TokenDataInterface;
   user?: User;
   transaction: Transaction;

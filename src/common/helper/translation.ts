@@ -149,7 +149,7 @@ export const getModuleDataTranslation = async <M extends Model>(
         languages.map(async (lang) => {
             if (lang.is_default) defautLang = lang.name;
             let translatedData = data;
-            if (convert) translatedData = await translateJson({ ...data }, lang.name, [...fields]);
+            // if (convert) translatedData = await translateJson({ ...data }, lang.name, [...fields]);
 
             const relation_fields = {};
 

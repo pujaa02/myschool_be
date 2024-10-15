@@ -1,7 +1,8 @@
-import { catchAsync } from '@/common/utils';
-import { generalResponse } from '@helpers/response/generalResponse';
-import PermissionRepo from '@modules/permission/repository/permission.repository';
+
 import { Request, Response } from 'express';
+import PermissionRepo from '../repository/permission.repository';
+import { generalResponse } from '@/common/helper/response/generalResponse';
+import { catchAsync } from '@/common/util';
 
 export default class PermissionController {
   private permissionRepository = new PermissionRepo();

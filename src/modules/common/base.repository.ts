@@ -62,7 +62,7 @@ export default class BaseRepository<M extends Model> {
     };
 
     readonly getAllData = async (options: FindAndCountAllArgs<M>) => {
-        return this.DBModel.findAndCountAll({ ...options, distinct: true }).then((parseData) => parse(parseData));
+        return this.DBModel.findAndCountAll({ ...options, distinct: true }).then((parseData: any) => parse(parseData));
     };
 }
 

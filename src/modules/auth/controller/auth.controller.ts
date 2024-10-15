@@ -1,7 +1,6 @@
 import PermissionRepo from '@/modules/permission/repository/permission.repository';
 import RoleRepo from '@/modules/role/repository/role.repository';
 import RolePermissionRepo from '@/modules/rolePermission/repository/rolePermission.repository';
-import ManagerController from '@/modules/user/controller/trainer.controller';
 import { Request, Response } from 'express';
 import { Sequelize } from 'sequelize';
 import { LoginInterface } from '../interfaces/auth.interfaces';
@@ -27,17 +26,6 @@ export default class AuthController {
    */
   public registerUser = catchAsync(async (req: Request, res: Response) => {
     const user = await this.authRepository.registerUser(req);
-    return generalResponse(req, res, user, 'REGISTER_SUCCESS', true);
-  });
-
-  /**
-   * private individual register Api
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
-  public registerPrivateIndividualUser = catchAsync(async (req: Request, res: Response) => {
-    const user = await this.authRepository.registerPrivateIndividualUser(req);
     return generalResponse(req, res, user, 'REGISTER_SUCCESS', true);
   });
 

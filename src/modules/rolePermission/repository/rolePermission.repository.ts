@@ -41,7 +41,7 @@ export default class RolePermissionRepo extends BaseRepository<RolePermission> {
             const exist_access: number[] = separated_roles.map((strNumber) => Number(strNumber));
             const access_role_ids = await Promise.all(
               user_array.map(async (name) => {
-                const temp = await Role.findAll({
+                const temp: any = await Role.findAll({
                   where: {
                     name,
                   },
