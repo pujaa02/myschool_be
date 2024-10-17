@@ -16,7 +16,6 @@ export default class AuthController {
   private rolePermissionRepository = new RolePermissionRepo();
   private roleRepository = new RoleRepo();
   private permissionRepository = new PermissionRepo();
-  private trainerRepository = new ManagerController();
 
   /**
    * user register Api
@@ -92,38 +91,8 @@ export default class AuthController {
 
     const permission = await this.permissionRepository.getAll({});
 
-    const trainerRating = await this.trainerRepository.getAllSurveyRating(req, res);
-
-    return generalResponse(
-      req,
-      res,
-      { user, roleAndPermission, role, permission, trainerRating },
-      'USER_FETCHED',
-      false,
-    );
+    return generalResponse(req, res, { user, roleAndPermission, role, permission }, 'USER_FETCHED', false);
   });
-
-  /**
-   * Set up 2 FA
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
-  setup2FAVerify = catchAsync(async (req: Request, res: Response) => {
-    const data = await this.authRepository.setup2FAVerify(req, req.body, req.tokenData?.user);
-    return generalResponse(req, res, data, 'USER_VERIFIED');
-  });
-
-  /**
-   * Set up 2 FA
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
-  getTwoFactorAuthQR = async (req: Request, res: Response) => {
-    const data = await this.authRepository.getTwoFactorAuthQR(req);
-    return generalResponse(req, res, data, 'USER_VERIFIED');
-  };
 
   /**
    * set Password Api
@@ -134,28 +103,6 @@ export default class AuthController {
   public setPassword = catchAsync(async (req: Request, res: Response) => {
     const data = await this.authRepository.setPassword({ user: req.tokenData?.user, password: req.body.password });
     return generalResponse(req, res, data, 'SET_PASSWORD_SUCCESS', false);
-  });
-
-  /**
-   * set Password Api
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
-  public otpVerification = catchAsync(async (req: Request, res: Response) => {
-    const data = await this.authRepository.otpVerification(req.body);
-    return generalResponse(req, res, data, 'OTP_VERIFIED_SUCCESS', true);
-  });
-
-  /**
-   * Resent Otp Api
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
-  public resendOTP = catchAsync(async (req: Request, res: Response) => {
-    const otpData = await this.authRepository.sendOTP(req.body);
-    return generalResponse(req, res, otpData, 'OTP_SENT_SUCCESSFULLY', true);
   });
 
   /**

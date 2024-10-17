@@ -1,12 +1,12 @@
 import { Routes } from '@/common/interfaces/general/routes.interface';
 import authMiddleware from '@/middlewares/auth.middleware';
 import { fileUpload } from '@/middlewares/multer.middleware';
-import { translateUserData } from '@/middlewares/translation.middleware';
+// import { translateUserData } from '@/middlewares/translation.middleware';
 import validationMiddleware from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 import multer from 'multer';
 import AuthController from '../controller/auth.controller';
-import {  ChangePasswordSchema, LoginSchema, RegisterSchema, ResetPasswordSchema } from '../validations/auth.validation';
+import { ChangePasswordSchema, LoginSchema, RegisterSchema, ResetPasswordSchema } from '../validations/auth.validation';
 
 class AuthRoute implements Routes {
   public path = '/auth';
@@ -19,7 +19,12 @@ class AuthRoute implements Routes {
 
   private initializeRoutes() {
     // login route
-    this.router.post(`${this.path}/login`, multer().none(), validationMiddleware(LoginSchema, 'body'), this.authController.login);
+    this.router.post(
+      `${this.path}/login`,
+      multer().none(),
+      validationMiddleware(LoginSchema, 'body'),
+      this.authController.login,
+    );
 
     // logout route
     this.router.post(`${this.path}/logout`, multer().none(), authMiddleware, this.authController.logout);
@@ -31,8 +36,6 @@ class AuthRoute implements Routes {
       validationMiddleware(RegisterSchema, 'body'),
       this.authController.registerUser,
     );
-
-
 
     // Change Password
     this.router.post(
@@ -67,9 +70,7 @@ class AuthRoute implements Routes {
     );
 
     // Get Logged In
-    this.router.get(`${this.path}/getLoggedIn`, authMiddleware, translateUserData, this.authController.getLoggedIn);
-
-  
+    this.router.get(`${this.path}/getLoggedIn`, authMiddleware, this.authController.getLoggedIn);
   }
 }
 

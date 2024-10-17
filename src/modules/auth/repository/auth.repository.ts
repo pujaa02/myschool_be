@@ -1,24 +1,17 @@
 import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
 import jwt from 'jsonwebtoken';
-import {
-  ChangePasswordInterface,
-  LoginInterface,
-  OtpVerificationInterface,
-  SendOtpInterface,
-  SetPasswordInterface,
-} from '../interfaces/auth.interfaces';
-import { authRegisterPrivateIndividualReq, authRegisterReq } from '../normalizer/auth.normalizer';
+import { LoginInterface } from '../interfaces/auth.interfaces';
+import { authRegisterReq } from '../normalizer/auth.normalizer';
 import { HttpException } from '@/common/helper/response/httpException';
-import { Bool, encrypt } from '@/common/util';
 import { SECRET_KEY, FRONT_URL } from '@/config';
 import { USER_STATUS } from '@/models/interfaces/user.model.interface';
 import Role from '@/models/role.model';
 import User from '@/models/user.model';
 import BaseRepository from '@/modules/common/base.repository';
-import { decrypt } from 'dotenv';
 import { parse } from 'path';
 import UserRepo from '@/modules/user/repository/user.repository';
+import { RoleEnum } from '@/common/constants/enum.constant';
 
 export default class AuthRepo extends BaseRepository<User> {
   private readonly userRepository = new UserRepo();
@@ -27,7 +20,9 @@ export default class AuthRepo extends BaseRepository<User> {
   }
 
   readonly createToken = (user: User, is_remember: boolean, time?: string) => {
-    return jwt.sign({ email: user.email, userId: user.id }, SECRET_KEY, { expiresIn: is_remember ? '3d' : time ? time : '1d' });
+    return jwt.sign({ email: user.email, userId: user.id }, SECRET_KEY, {
+      expiresIn: is_remember ? '3d' : time ? time : '1d',
+    });
   };
 
   readonly registerUser = async (req: Request) => {
@@ -36,12 +31,9 @@ export default class AuthRepo extends BaseRepository<User> {
     return result;
   };
 
-
-
   logout = async (reqUser: User) => {
     await this.userRepository.update({ verified: false }, { where: { id: reqUser.id } });
   };
-
 
   public login = async (data: LoginInterface) => {
     const { email, is_remember } = data;
@@ -55,9 +47,9 @@ export default class AuthRepo extends BaseRepository<User> {
       rejectOnEmpty: false,
     });
     if (user) {
-      // if (parse(user)?.role.name === RoleEnum.Admin) {
-      //   await this.userRepository.update({ verified: true }, { where: { id: parse(user).id } });
-      // }
+      if (parse(user)?.role.name === RoleEnum.ADMIN) {
+        await this.userRepository.update({ verified: true }, { where: { id: parse(user).id } });
+      }
       if (user.active === USER_STATUS.INACTIVE) {
         throw new HttpException(400, 'USER_INACTIVE');
       }
@@ -87,5 +79,4 @@ export default class AuthRepo extends BaseRepository<User> {
     if (isMatch) return true;
     else throw new HttpException(400, 'PASSWORD_ERROR', null, true);
   };
-
 }

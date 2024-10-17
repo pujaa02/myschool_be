@@ -45,5 +45,6 @@
   "ACCESS_PERMISSION_CREATE": "Access Permissions Created Successfully",
   "ACCESS_PERMISSION_UPDATE": "Access Permissions Updated Successfully",
   "ACCESS_PERMISSION_DELETE": "Access Permissions Deleted Successfully",
-  "ACCESS_PERMISSION_NOT_FOUND": "Access Permission Not Found"
+  "ACCESS_PERMISSION_NOT_FOUND": "Access Permission Not Found",
+  "VALIDATION_ERROR": "Validation Error"
 }
