@@ -1,10 +1,10 @@
-import { LanguageEnum } from '@/common/interfaces/general/general.interface';
+import { LanguageEnum } from '../common/interfaces/general/general.interface';
 import { DataTypes } from 'sequelize';
 import { BelongsTo, Column, CreatedAt, DeletedAt, Model, Table, UpdatedAt } from 'sequelize-typescript';
 import Feature from './feature.model';
 import User from './user.model';
 import { RequiredSystemLogAttribute, SystemLogAttributes } from './interfaces/systemLogs.model.interface';
-import { PermissionEnum } from '@/common/constants/enum.constant';
+import { PermissionEnum } from '../common/constants/enum.constant';
 
 @Table({
   tableName: 'system_logs',

@@ -109,7 +109,7 @@ export default class UserRepo extends BaseRepository<User> {
     }
 
     if (!isRoleExists) throw new HttpException(404, 'NOT_FOUND');
-    if (isRoleExists.name === RoleEnum.ADMIN) throw new HttpException(400, 'INVALID');
+    if (isRoleExists.name === RoleEnum.Admin) throw new HttpException(400, 'INVALID');
 
     const password = generateRandomPassword(12);
 
@@ -241,7 +241,7 @@ export default class UserRepo extends BaseRepository<User> {
 
     if (!isRoleExists) throw new HttpException(404, 'NOT_FOUND');
     if (!data.is_admin_bulk_upload) {
-      if (isRoleExists.name === RoleEnum.ADMIN) throw new HttpException(400, 'INVALID');
+      if (isRoleExists.name === RoleEnum.Admin) throw new HttpException(400, 'INVALID');
     }
 
     const normalizedUsers = bulkUserCreateNormalizer(usersToInsert);

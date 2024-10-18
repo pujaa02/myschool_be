@@ -15,7 +15,7 @@ import {
   BelongsToMany,
   HasMany,
 } from 'sequelize-typescript';
-import { DataTypes, HasManyCreateAssociationMixin } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import { DATE_FORMAT, RequiredUserAttributes, USER_STATUS, UserAttributes } from './interfaces/user.model.interface';
 import Role from './role.model';
 import CellMember from './cellMember.model';
@@ -24,7 +24,7 @@ import Sensation from './sensation.model';
 import SensationComment from './sensationComment.model';
 import SensationLike from './sensationLike.model';
 import Student from './student.model';
-import { LanguageEnum } from '@/common/interfaces/general/general.interface';
+import { LanguageEnum } from '../common/interfaces/general/general.interface';
 @Table({
   timestamps: true,
   paranoid: true,
@@ -149,7 +149,6 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
 
   @Column
   parent_table_id: number;
-
 
   @Column
   last_active_time: Date | null;

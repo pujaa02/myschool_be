@@ -1,7 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import User from './user.model';
 import { DATABASE_URL, ENABLE_LOG, NODE_ENV } from '../config';
-import { logger } from '../utils/logger';
 import CellMember from './cellMember.model';
 import Class from './class.model';
 import Committe from './committe.model';
@@ -17,8 +16,10 @@ import Subject from './subject.model';
 import Role from './role.model';
 import RolePermission from './rolesPermissions.model';
 import Permission from './permission.model';
-import PermissionGroup from './permissionGroup.model';
-import UserRole from './userRole.model';
+import { logger } from '../common/util/logger';
+import Feature from './feature.model';
+import LanguageModel from './language.model';
+import SystemLogs from './systemLogs.model';
 
 let db: Sequelize;
 
@@ -42,11 +43,12 @@ export const initSequelize = () => {
     Student,
     StudentAttendance,
     Subject,
-    UserRole,
+    Feature,
+    LanguageModel,
     Role,
     RolePermission,
     Permission,
-    PermissionGroup,
+    SystemLogs,
   ]);
 
   return sequelize;

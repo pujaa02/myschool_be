@@ -12,18 +12,16 @@ import Role from '@/models/role.model';
 import AuthRepo from '../repository/auth.repository';
 
 export default class AuthController {
-  private authRepository = new AuthRepo();
-  private rolePermissionRepository = new RolePermissionRepo();
-  private roleRepository = new RoleRepo();
-  private permissionRepository = new PermissionRepo();
+  private readonly authRepository: AuthRepo = new AuthRepo();
+  private readonly rolePermissionRepository: RolePermissionRepo = new RolePermissionRepo();
+  private readonly roleRepository: RoleRepo = new RoleRepo();
+  private readonly permissionRepository: PermissionRepo = new PermissionRepo();
 
-  /**
-   * user register Api
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
-  public registerUser = catchAsync(async (req: Request, res: Response) => {
+  constructor() {
+    //
+  }
+
+  public readonly registerUser = catchAsync(async (req: Request, res: Response) => {
     const user = await this.authRepository.registerUser(req);
     return generalResponse(req, res, user, 'REGISTER_SUCCESS', true);
   });
@@ -94,29 +92,29 @@ export default class AuthController {
     return generalResponse(req, res, { user, roleAndPermission, role, permission }, 'USER_FETCHED', false);
   });
 
-  /**
-   * set Password Api
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
-  public setPassword = catchAsync(async (req: Request, res: Response) => {
-    const data = await this.authRepository.setPassword({ user: req.tokenData?.user, password: req.body.password });
-    return generalResponse(req, res, data, 'SET_PASSWORD_SUCCESS', false);
-  });
+  // /**
+  //  * set Password Api
+  //  * @param {Request} req
+  //  * @param {Response} res
+  //  * @returns {Promise<void>}
+  //  */
+  // public setPassword = catchAsync(async (req: Request, res: Response) => {
+  //   const data = await this.authRepository.setPassword({ user: req.tokenData?.user, password: req.body.password });
+  //   return generalResponse(req, res, data, 'SET_PASSWORD_SUCCESS', false);
+  // });
 
-  /**
-   * set Password Api
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
-  public changePassword = catchAsync(async (req: Request, res: Response) => {
-    const data = await this.authRepository.changePassword({
-      user: req.tokenData?.user,
-      newPassword: req.body.newPassword,
-      oldPassword: req.body.oldPassword,
-    });
-    return generalResponse(req, res, data, 'CHANGE_PASSWORD_SUCCESS', true);
-  });
+  // /**
+  //  * set Password Api
+  //  * @param {Request} req
+  //  * @param {Response} res
+  //  * @returns {Promise<void>}
+  //  */
+  // public changePassword = catchAsync(async (req: Request, res: Response) => {
+  //   const data = await this.authRepository.changePassword({
+  //     user: req.tokenData?.user,
+  //     newPassword: req.body.newPassword,
+  //     oldPassword: req.body.oldPassword,
+  //   });
+  //   return generalResponse(req, res, data, 'CHANGE_PASSWORD_SUCCESS', true);
+  // });
 }

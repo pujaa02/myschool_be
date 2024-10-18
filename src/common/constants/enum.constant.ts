@@ -6,17 +6,17 @@ export enum PermissionEnum {
 }
 
 export enum RoleEnum {
-  ADMIN = 'Admin',
-  TEACHER = 'Teacher',
-  STUDENT = 'Student',
+  Admin = 'Admin',
+  Teacher = 'Teacher',
+  Student = 'Student',
 }
 export enum FeaturesEnum {
   Dashboard = 'Dashboard',
-  User = 'User',
   Feature = 'Feature',
   Role = 'Role',
   Permissions = 'Permission',
   RolePermission = 'RolePermission',
+  User = 'User',
   Admin = 'Admin',
   Teacher = 'Teacher',
   Student = 'Student',
@@ -24,7 +24,7 @@ export enum FeaturesEnum {
   Exam = 'Exam',
   Sensation = 'Sensation',
   Leave = 'Leave',
-  Committe = 'Committe',
+  Committee = 'Committee',
   SystemLog = 'SystemLog',
 }
 

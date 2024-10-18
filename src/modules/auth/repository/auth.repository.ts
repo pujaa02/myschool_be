@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
 import jwt from 'jsonwebtoken';
-import { ChangePasswordInterface, LoginInterface } from '../interfaces/auth.interfaces';
+import { LoginInterface } from '../interfaces/auth.interfaces';
 import { HttpException } from '@/common/helper/response/httpException';
 import { SECRET_KEY } from '@/config';
 import { USER_STATUS } from '@/models/interfaces/user.model.interface';
@@ -15,7 +15,6 @@ import { authRegisterReq } from '../normalizer/auth.normalizer';
 
 export default class AuthRepo extends BaseRepository<User> {
   private readonly userRepository = new UserRepo();
-  private readonly otpRepository = new OtpRepo();
   constructor() {
     super(User.name);
   }
@@ -48,7 +47,7 @@ export default class AuthRepo extends BaseRepository<User> {
       rejectOnEmpty: false,
     });
     if (user) {
-      if (parse(user)?.role.name === RoleEnum.ADMIN) {
+      if (parse(user)?.role.name === RoleEnum.Admin) {
         await this.userRepository.update({ verified: true }, { where: { id: parse(user).id } });
       }
       if (user.active === USER_STATUS.INACTIVE) {
@@ -79,15 +78,5 @@ export default class AuthRepo extends BaseRepository<User> {
     const isMatch = await bcrypt.compare(data.password, parse(user).password);
     if (isMatch) return true;
     else throw new HttpException(400, 'PASSWORD_ERROR', null, true);
-  };
-
-  public checkPassword = async (data: LoginInterface, user: User) => {
-    if (!user.password) throw new HttpException(400, 'PASSWORD_NOT_SET');
-    const isMatch = await bcrypt.compare(data.password, parse(user).password);
-    if (isMatch) return true;
-    else throw new HttpException(400, 'PASSWORD_ERROR', null, true);
-  };
-  changePassword = async (data: ChangePasswordInterface) => {
-    await this.otpRepository.changePassword(data);
   };
 }

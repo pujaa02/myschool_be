@@ -16,4 +16,7 @@ export const {
   LOG_DIR,
   JWT_SECRET,
   ARGON_SALT_LENGTH,
+  //#ADMIN CREDS
+  ADMIN_EMAIL,
+  ADMIN_PASSWORD,
 } = process.env;
