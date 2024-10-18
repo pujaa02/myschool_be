@@ -1,10 +1,11 @@
 import { RoleEnum } from '@/common/constants/enum.constant';
 import { HttpException } from '@/common/helper/response/httpException';
-import { getModuleChildAndParent, getModuleDataTranslation } from '@/common/helper/translation';
+import { getModuleChildAndParent } from '@/common/helper/translation';
 import { DeleteArgsType } from '@/common/interfaces/general/database.interface';
 import { LanguageEnum } from '@/common/interfaces/general/general.interface';
-import { generateRandomPassword, findDuplicates, generateSlugifyForModel } from '@/common/util';
+import { generateRandomPassword, findDuplicates, generateSlugifyForModel, parse } from '@/common/util';
 import db from '@/models';
+import { Request } from 'express';
 import { USER_STATUS, UserAttributes } from '@/models/interfaces/user.model.interface';
 import LanguageModel from '@/models/language.model';
 import Role from '@/models/role.model';
@@ -13,7 +14,6 @@ import { TokenDataInterface } from '@/modules/auth/interfaces/auth.interfaces';
 import BaseRepository from '@/modules/common/base.repository';
 import RoleRepo from '@/modules/role/repository/role.repository';
 import _ from 'lodash';
-import { parse } from 'path';
 import { Transaction, Op, ModelCtor } from 'sequelize';
 import { BuildUserArgs, BuildUserResp, BuildBulkUserArgs } from '../interfaces/user.interfaces';
 import { bulkUserCreateNormalizer } from '../normalizer/user-bulk-create.normalizer';
@@ -65,8 +65,6 @@ export default class UserRepo extends BaseRepository<User> {
 
   readonly updateUser = async (userCreateArgs: Required<BuildUserArgs>) => {
     const { data, user, transaction, tokenData, files } = userCreateArgs;
-    const oldEmail = user?.email;
-    const oldUser = user;
     // set Data.
     let extra_data = null;
     let role_name = '';
@@ -92,33 +90,6 @@ export default class UserRepo extends BaseRepository<User> {
       data.role_id = isRoleExists.id;
     }
 
-    const full_name = `${data?.first_name} ${data?.last_name}`;
-
-    const { moduleIdLangMap: userIdLangMap } = await getModuleDataTranslation(User.name, {
-      data: { ...data, full_name },
-      fields: ['first_name', 'last_name'],
-      slugKeyModule: 'username',
-      ...(data.first_name && data.last_name ? { slugKeyData: 'full_name' } : {}),
-      transaction,
-      user_id: tokenData.user.id,
-      module_id: user.id,
-      onlyDefaultLang: true,
-      convert: false,
-      tokenData,
-    });
-    const userData = await User.findOne({ where: { id: user.id, active: USER_STATUS.ACTIVE } });
-    const adminUser = await User.findOne({
-      where: { active: USER_STATUS.ACTIVE },
-      include: [
-        {
-          model: Role,
-          where: {
-            name: RoleEnum.ADMIN,
-          },
-        },
-      ],
-    });
-
     let updatedUser: any = await this.getUser(user.id, transaction);
     updatedUser = { ...parse(updatedUser), ...extra_data };
     return updatedUser;
@@ -142,25 +113,17 @@ export default class UserRepo extends BaseRepository<User> {
 
     const password = generateRandomPassword(12);
 
-    const { moduleIdLangMap: userIdLangMap } = await getModuleDataTranslation(User.name, {
-      data: {
-        ...data,
-        password,
-        active: USER_STATUS.ACTIVE,
-        role_id: isRoleExists.id,
-        full_name: `${data?.first_name} ${data?.last_name}`,
-        added_by: tokenData?.user?.id,
-      },
-      fields: ['first_name', 'last_name', 'address1', 'address2', 'city', 'country', 'state'],
-      slugKeyModule: 'username',
-      slugKeyData: 'full_name',
-      transaction,
-      onlyDefaultLang: true,
-      tokenData,
-      convert: false,
+    const userdata = await this.create({
+      ...data,
+      password,
+      active: USER_STATUS.ACTIVE,
+      role_id: isRoleExists.id,
+      full_name: `${data?.first_name} ${data?.last_name}`,
+      added_by: tokenData?.user?.id,
     });
+
     return {
-      userIdLangMap,
+      userdata,
     };
   };
 

@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { Transaction } from 'sequelize';
 
 export interface BuildUserArgs {
-  data: Request['body'] ;
+  data: Request['body'];
   tokenData: TokenDataInterface;
   user?: User;
   transaction: Transaction;
@@ -17,9 +17,10 @@ export interface BuildUserArgs {
 }
 
 export interface BuildUserResp {
-  userIdLangMap: {
-    [key: string]: number;
-  };
+  // userIdLangMap: {
+  //   [key: string]: number;
+  // };
+  userdata: any;
 }
 
 export interface BulkUploadBody {

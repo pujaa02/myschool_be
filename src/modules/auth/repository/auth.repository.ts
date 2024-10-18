@@ -1,20 +1,21 @@
 import * as bcrypt from 'bcrypt';
 import { Request } from 'express';
 import jwt from 'jsonwebtoken';
-import { LoginInterface } from '../interfaces/auth.interfaces';
-import { authRegisterReq } from '../normalizer/auth.normalizer';
+import { ChangePasswordInterface, LoginInterface } from '../interfaces/auth.interfaces';
 import { HttpException } from '@/common/helper/response/httpException';
-import { SECRET_KEY, FRONT_URL } from '@/config';
+import { SECRET_KEY } from '@/config';
 import { USER_STATUS } from '@/models/interfaces/user.model.interface';
 import Role from '@/models/role.model';
 import User from '@/models/user.model';
 import BaseRepository from '@/modules/common/base.repository';
-import { parse } from 'path';
 import UserRepo from '@/modules/user/repository/user.repository';
 import { RoleEnum } from '@/common/constants/enum.constant';
+import { parse } from '@/common/util';
+import { authRegisterReq } from '../normalizer/auth.normalizer';
 
 export default class AuthRepo extends BaseRepository<User> {
   private readonly userRepository = new UserRepo();
+  private readonly otpRepository = new OtpRepo();
   constructor() {
     super(User.name);
   }
@@ -37,7 +38,7 @@ export default class AuthRepo extends BaseRepository<User> {
 
   public login = async (data: LoginInterface) => {
     const { email, is_remember } = data;
-    const user = await this.userRepository.DBModel.scope('withPassword').findOne({
+    const user: any = await this.userRepository.DBModel.scope('withPassword').findOne({
       where: { email },
       include: [
         {
@@ -78,5 +79,15 @@ export default class AuthRepo extends BaseRepository<User> {
     const isMatch = await bcrypt.compare(data.password, parse(user).password);
     if (isMatch) return true;
     else throw new HttpException(400, 'PASSWORD_ERROR', null, true);
+  };
+
+  public checkPassword = async (data: LoginInterface, user: User) => {
+    if (!user.password) throw new HttpException(400, 'PASSWORD_NOT_SET');
+    const isMatch = await bcrypt.compare(data.password, parse(user).password);
+    if (isMatch) return true;
+    else throw new HttpException(400, 'PASSWORD_ERROR', null, true);
+  };
+  changePassword = async (data: ChangePasswordInterface) => {
+    await this.otpRepository.changePassword(data);
   };
 }
