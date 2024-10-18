@@ -21,17 +21,11 @@ export default class AuthController {
     //
   }
 
-  public readonly registerUser = catchAsync(async (req: Request, res: Response) => {
-    const user = await this.authRepository.registerUser(req);
-    return generalResponse(req, res, user, 'REGISTER_SUCCESS', true);
-  });
+  // public readonly registerUser = catchAsync(async (req: Request, res: Response) => {
+  //   const user = await this.authRepository.registerUser(req);
+  //   return generalResponse(req, res, user, 'REGISTER_SUCCESS', true);
+  // });
 
-  /**
-   * user login Api
-   * @param {Request} req
-   * @param {Response} res
-   * @returns {Promise<void>}
-   */
   public login = catchAsync(async (req: Request, res: Response) => {
     const responseData = await this.authRepository.login(req.body as LoginInterface);
     return generalResponse(req, res, responseData, 'LOGIN_SUCCESS', false);
@@ -98,10 +92,10 @@ export default class AuthController {
   //  * @param {Response} res
   //  * @returns {Promise<void>}
   //  */
-  // public setPassword = catchAsync(async (req: Request, res: Response) => {
-  //   const data = await this.authRepository.setPassword({ user: req.tokenData?.user, password: req.body.password });
-  //   return generalResponse(req, res, data, 'SET_PASSWORD_SUCCESS', false);
-  // });
+  public setPassword = catchAsync(async (req: Request, res: Response) => {
+    const data = await this.authRepository.setPassword({ user: req.tokenData?.user, password: req.body.password });
+    return generalResponse(req, res, data, 'SET_PASSWORD_SUCCESS', false);
+  });
 
   // /**
   //  * set Password Api
@@ -109,12 +103,12 @@ export default class AuthController {
   //  * @param {Response} res
   //  * @returns {Promise<void>}
   //  */
-  // public changePassword = catchAsync(async (req: Request, res: Response) => {
-  //   const data = await this.authRepository.changePassword({
-  //     user: req.tokenData?.user,
-  //     newPassword: req.body.newPassword,
-  //     oldPassword: req.body.oldPassword,
-  //   });
-  //   return generalResponse(req, res, data, 'CHANGE_PASSWORD_SUCCESS', true);
-  // });
+  public changePassword = catchAsync(async (req: Request, res: Response) => {
+    const data = await this.authRepository.changePassword({
+      user: req.tokenData?.user,
+      newPassword: req.body.newPassword,
+      oldPassword: req.body.oldPassword,
+    });
+    return generalResponse(req, res, data, 'CHANGE_PASSWORD_SUCCESS', true);
+  });
 }

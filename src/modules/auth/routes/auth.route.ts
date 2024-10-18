@@ -1,6 +1,5 @@
 import { Routes } from '@/common/interfaces/general/routes.interface';
 import authMiddleware from '@/middlewares/auth.middleware';
-import { fileUpload } from '@/middlewares/multer.middleware';
 // import { translateUserData } from '@/middlewares/translation.middleware';
 import validationMiddleware from '@/middlewares/validation.middleware';
 import { Router } from 'express';
@@ -30,12 +29,12 @@ class AuthRoute implements Routes {
     this.router.post(`${this.path}/logout`, multer().none(), authMiddleware, this.authController.logout);
 
     // Register route
-    this.router.post(
-      `${this.path}/register`,
-      fileUpload(1),
-      validationMiddleware(RegisterSchema, 'body'),
-      this.authController.registerUser,
-    );
+    // this.router.post(
+    //   `${this.path}/register`,
+    //   fileUpload(1),
+    //   validationMiddleware(RegisterSchema, 'body'),
+    //   this.authController.registerUser,
+    // );
 
     // Change Password
     this.router.post(

@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
-import { Request } from 'express';
+// import { Request } from 'express';
 import jwt from 'jsonwebtoken';
-import { LoginInterface } from '../interfaces/auth.interfaces';
+import { ChangePasswordInterface, LoginInterface, SetPasswordInterface } from '../interfaces/auth.interfaces';
 import { HttpException } from '@/common/helper/response/httpException';
 import { SECRET_KEY } from '@/config';
 import { USER_STATUS } from '@/models/interfaces/user.model.interface';
@@ -11,10 +11,12 @@ import BaseRepository from '@/modules/common/base.repository';
 import UserRepo from '@/modules/user/repository/user.repository';
 import { RoleEnum } from '@/common/constants/enum.constant';
 import { parse } from '@/common/util';
-import { authRegisterReq } from '../normalizer/auth.normalizer';
+import OtpRepo from './otp.repository';
+// import { authRegisterReq } from '../normalizer/auth.normalizer';
 
 export default class AuthRepo extends BaseRepository<User> {
   private readonly userRepository = new UserRepo();
+  private readonly otpRepository = new OtpRepo();
   constructor() {
     super(User.name);
   }
@@ -25,11 +27,11 @@ export default class AuthRepo extends BaseRepository<User> {
     });
   };
 
-  readonly registerUser = async (req: Request) => {
-    const { tokenData, transaction } = req;
-    const result = authRegisterReq(req);
-    return result;
-  };
+  // readonly registerUser = async (req: Request) => {
+  //   const { tokenData, transaction } = req;
+  //   const result = authRegisterReq(req);
+  //   return result;
+  // };
 
   logout = async (reqUser: User) => {
     await this.userRepository.update({ verified: false }, { where: { id: reqUser.id } });
@@ -78,5 +80,13 @@ export default class AuthRepo extends BaseRepository<User> {
     const isMatch = await bcrypt.compare(data.password, parse(user).password);
     if (isMatch) return true;
     else throw new HttpException(400, 'PASSWORD_ERROR', null, true);
+  };
+
+  async setPassword(data: SetPasswordInterface) {
+    return this.otpRepository.setPassword(data);
+  }
+
+  changePassword = async (data: ChangePasswordInterface) => {
+    await this.otpRepository.changePassword(data);
   };
 }
