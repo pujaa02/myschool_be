@@ -35,4 +35,5 @@ export enum language {
 export const queryBuildCases = {
   default: 'default',
   getAllRoleWiseData: 'getAllRoleWiseData',
+  getFeatureDropdown: 'getFeatureDropdown',
 };

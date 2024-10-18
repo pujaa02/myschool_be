@@ -1,5 +1,4 @@
 import { HttpException } from '@/common/helper/response/httpException';
-import { findMostMatchedString } from '@/common/util';
 import { logger } from '@/common/util/logger';
 import User from '@/models/user.model';
 import BaseRepository from '@/modules/common/base.repository';
@@ -8,6 +7,18 @@ import _ from 'lodash';
 import { parse } from 'path';
 import { Op, Transaction } from 'sequelize';
 import { Model, ModelCtor } from 'sequelize-typescript';
+import { getPaginationParams } from './pagination.helper';
+import { additionalQueries } from './additionalQueries.helper';
+import { attributeSetter } from './attributeSetter.helper';
+import { builderSetter } from './builderSetter.helper';
+import { filterData } from './caseWiseDataFilter.helper';
+import { relationalGroupHandler, dropdownHandler, getDetails } from './databaseCommon.helper';
+import { groupSetter } from './groupSetter.helper';
+import { includeDataSetter } from './includeSetter.helper';
+import { orderSetter } from './orderSetter.helper';
+import { queryBuilderSetter } from './queryBuilderSetter.helper';
+import { conditionSetter } from './whereSetter.helper';
+import { QueryParser } from '../queryParser';
 
 export const getAllData = async (req: Request, modelName: string, where: any, queryBuild: any) => {
   try {
@@ -43,118 +54,117 @@ export const getData = async (req: Request, modelName: string, where: any, query
   }
 };
 
+export const getAllDetails = async (
+  model: any,
+  modelName: string,
+  cases: string,
+  req: Request,
+  isCheckDeleted = true,
+  ignorePagination = false,
+) => {
+  const { query, tokenData } = req;
+  req.query.cases = cases;
+  const paramsData = getPaginationParams(req);
+  await builderSetter(modelName, cases, req, (tokenData?.user as User) || null);
+  let queryBuild = new QueryParser({ request: req, model }).getFullQuery();
+  const where: any = await conditionSetter(req, modelName, cases);
+  await groupSetter(req, modelName, cases, queryBuild);
+  await orderSetter(req, modelName, cases, queryBuild);
 
-// export const getAllDetails = async (
-//   model: any,
-//   modelName: string,
-//   cases: string,
-//   req: Request,
-//   isCheckDeleted = true,
-//   ignorePagination = false,
-// ) => {
-//   const { query, tokenData } = req;
-//   req.query.cases = cases;
-//   const paramsData = getPaginationParams(req);
-//   await builderSetter(modelName, cases, req, (tokenData?.user as User) || null);
-//   let queryBuild = new QueryParser({ request: req, model }).getFullQuery();
-//   const where: any = await conditionSetter(req, modelName, cases);
-//   await groupSetter(req, modelName, cases, queryBuild);
-//   await orderSetter(req, modelName, cases, queryBuild);
+  await attributeSetter(req, modelName, cases, queryBuild);
+  await includeDataSetter(req, queryBuild, cases);
 
-//   await attributeSetter(req, modelName, cases, queryBuild);
-//   await includeDataSetter(req, queryBuild, cases);
+  if (ignorePagination) {
+    delete queryBuild.limit;
+    delete queryBuild.offset;
+  }
+  queryBuild = queryBuilderSetter(req, queryBuild, cases);
 
-//   if (ignorePagination) {
-//     delete queryBuild.limit;
-//     delete queryBuild.offset;
-//   }
-//   queryBuild = queryBuilderSetter(req, queryBuild, cases);
+  let foundData: any = await getAllData(
+    req,
+    modelName,
+    { ...queryBuild.where, ...where, ...(isCheckDeleted ? { deleted_at: null } : {}) },
+    queryBuild,
+  );
+  foundData = await additionalQueries(req, foundData, cases);
 
-//   let foundData = await getAllData(
-//     req,
-//     modelName,
-//     { ...queryBuild.where, ...where, ...(isCheckDeleted ? { deleted_at: null } : {}) },
-//     queryBuild,
-//   );
-//   foundData = await additionalQueries(req, foundData, cases);
+  if (ignorePagination) {
+    return foundData;
+  }
 
-//   if (ignorePagination) {
-//     return foundData;
-//   }
+  if (query?.relationalGroup) {
+    return await relationalGroupHandler(req, foundData);
+  }
 
-//   if (query?.relationalGroup) {
-//     return await relationalGroupHandler(req, foundData);
-//   }
+  if (foundData && foundData.count > 0) {
+    const dataToReturn = await filterData(req, foundData?.rows, cases);
+    foundData = { rows: dataToReturn, count: dataToReturn.length };
+  }
 
-//   if (foundData && foundData.count > 0) {
-//     const dataToReturn = await filterData(req, foundData?.rows, cases);
-//     foundData = { rows: dataToReturn, count: dataToReturn.length };
-//   }
+  if (query?.dropdown) return await dropdownHandler(cases, req, foundData);
+  else {
+    const returnObj = await getDetails(
+      req,
+      foundData?.rows || [],
+      {
+        paramsData,
+      },
+      cases,
+    );
+    return returnObj;
+  }
+};
+export const getDetail = async (model: any, modelName: string, cases: string, req: Request, isCheckDeleted = true) => {
+  const { tokenData } = req;
 
-//   if (query?.dropdown) return await dropdownHandler(cases, req, foundData);
-//   else {
-//     const returnObj = await getDetails(
-//       req,
-//       foundData?.rows || [],
-//       {
-//         paramsData,
-//       },
-//       cases,
-//     );
-//     return returnObj;
-//   }
-// };
-// export const getDetail = async (model: any, modelName: string, cases: string, req: Request, isCheckDeleted = true) => {
-//   const { tokenData } = req;
+  await builderSetter(modelName, cases, req, tokenData.user as User);
+  const queryBuild = new QueryParser({ request: req, model }).getFullQuery();
+  const where: any = await conditionSetter(req, modelName, cases);
 
-//   await builderSetter(modelName, cases, req, tokenData.user as User);
-//   const queryBuild = new QueryParser({ request: req, model }).getFullQuery();
-//   const where: any = await conditionSetter(req, modelName, cases);
+  await groupSetter(req, modelName, cases, queryBuild);
+  await orderSetter(req, modelName, cases, queryBuild);
 
-//   await groupSetter(req, modelName, cases, queryBuild);
-//   await orderSetter(req, modelName, cases, queryBuild);
+  await attributeSetter(req, modelName, cases, queryBuild);
+  await includeDataSetter(req, queryBuild, cases);
 
-//   await attributeSetter(req, modelName, cases, queryBuild);
-//   await includeDataSetter(req, queryBuild, cases);
+  let foundData = await getData(
+    req,
+    modelName,
+    { ...queryBuild.where, ...where, ...(isCheckDeleted ? { deleted_at: null } : {}) },
+    queryBuild,
+  );
 
-//   let foundData = await getData(
-//     req,
-//     modelName,
-//     { ...queryBuild.where, ...where, ...(isCheckDeleted ? { deleted_at: null } : {}) },
-//     queryBuild,
-//   );
+  if (foundData) {
+    const data = await additionalQueries(req, foundData, cases);
+    const dataToReturn = await filterData(req, data, cases);
+    foundData = dataToReturn;
+  }
+  return foundData;
+};
 
-//   if (foundData) {
-//     const data = await additionalQueries(req, foundData, cases);
-//     const dataToReturn = await filterData(req, data, cases);
-//     foundData = dataToReturn;
-//   }
-//   return foundData;
-// };
-
-// export const modelExist = async (modelName: string, data: any, where = {}) => {
-//   const model = new BaseRepository(modelName);
-//   let resultData = await model.get({
-//     where: {
-//       ...(data?.id ? { id: data.id } : data?.slug ? { slug: data.slug } : {}),
-//       ...(where ? where : {}),
-//     },
-//   });
-//   resultData = parse(resultData);
-//   if (resultData) return resultData;
-//   else throw new HttpException(400, 'NOT_FOUND');
-// };
-// export const modelExistOrNot = async (modelName: string, data: any, where = {}) => {
-//   const model = new BaseRepository(modelName);
-//   let resultData = await model.get({
-//     where: {
-//       ...(data?.id ? { id: data.id } : data?.slug ? { slug: data.slug } : {}),
-//       ...(where ? where : {}),
-//     },
-//   });
-//   resultData = parse(resultData);
-//   return resultData;
-// };
+export const modelExist = async (modelName: string, data: any, where = {}) => {
+  const model = new BaseRepository(modelName);
+  let resultData: any = await model.get({
+    where: {
+      ...(data?.id ? { id: data.id } : data?.slug ? { slug: data.slug } : {}),
+      ...(where ? where : {}),
+    },
+  });
+  resultData = parse(resultData);
+  if (resultData) return resultData;
+  else throw new HttpException(400, 'NOT_FOUND');
+};
+export const modelExistOrNot = async (modelName: string, data: any, where = {}) => {
+  const model = new BaseRepository(modelName);
+  let resultData: any = await model.get({
+    where: {
+      ...(data?.id ? { id: data.id } : data?.slug ? { slug: data.slug } : {}),
+      ...(where ? where : {}),
+    },
+  });
+  resultData = parse(resultData);
+  return resultData;
+};
 
 export const getAssociatedModel = <N extends Model>(key: string, model: ModelCtor<N>) => {
   const db = require('@sequelizeDir/models')?.default;

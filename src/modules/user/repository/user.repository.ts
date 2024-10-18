@@ -1,25 +1,23 @@
-import { RoleEnum, FeaturesEnum, PermissionEnum } from "@/common/constants/enum.constant";
-import { HttpException } from "@/common/helper/response/httpException";
-import { getModuleChildAndParent, getModuleDataTranslation } from "@/common/helper/translation";
-import { DeleteArgsType } from "@/common/interfaces/general/database.interface";
-import { LanguageEnum } from "@/common/interfaces/general/general.interface";
-import { generateRandomPassword, findDuplicates, generateSlugifyForModel } from "@/common/util";
-import db from "@/models";
-import { USER_STATUS, UserAttributes } from "@/models/interfaces/user.model.interface";
-import LanguageModel from "@/models/language.model";
-import Role from "@/models/role.model";
-import User from "@/models/user.model";
-import { TokenDataInterface } from "@/modules/auth/interfaces/auth.interfaces";
-import BaseRepository from "@/modules/common/base.repository";
-import RoleRepo from "@/modules/role/repository/role.repository";
-import { json } from "express";
-import _ from "lodash";
-import { parse } from "path";
-import { Transaction, Op, ModelCtor } from "sequelize";
-import { BuildUserArgs, BuildUserResp, BuildBulkUserArgs } from "../interfaces/user.interfaces";
-import { bulkUserCreateNormalizer } from "../normalizer/user-bulk-create.normalizer";
-import { FILE_FIELD_ENUMS } from "@/common/constants/multer.constant";
-
+import { RoleEnum } from '@/common/constants/enum.constant';
+import { HttpException } from '@/common/helper/response/httpException';
+import { getModuleChildAndParent, getModuleDataTranslation } from '@/common/helper/translation';
+import { DeleteArgsType } from '@/common/interfaces/general/database.interface';
+import { LanguageEnum } from '@/common/interfaces/general/general.interface';
+import { generateRandomPassword, findDuplicates, generateSlugifyForModel } from '@/common/util';
+import db from '@/models';
+import { USER_STATUS, UserAttributes } from '@/models/interfaces/user.model.interface';
+import LanguageModel from '@/models/language.model';
+import Role from '@/models/role.model';
+import User from '@/models/user.model';
+import { TokenDataInterface } from '@/modules/auth/interfaces/auth.interfaces';
+import BaseRepository from '@/modules/common/base.repository';
+import RoleRepo from '@/modules/role/repository/role.repository';
+import _ from 'lodash';
+import { parse } from 'path';
+import { Transaction, Op, ModelCtor } from 'sequelize';
+import { BuildUserArgs, BuildUserResp, BuildBulkUserArgs } from '../interfaces/user.interfaces';
+import { bulkUserCreateNormalizer } from '../normalizer/user-bulk-create.normalizer';
+import { FILE_FIELD_ENUMS } from '@/common/constants/multer.constant';
 
 export default class UserRepo extends BaseRepository<User> {
   readonly roleRepository = new RoleRepo();
@@ -64,8 +62,6 @@ export default class UserRepo extends BaseRepository<User> {
   readonly updateUserData = async (user: User, data: UserAttributes) => {
     await User.update(data, { where: { id: user.id } });
   };
-
-
 
   readonly updateUser = async (userCreateArgs: Required<BuildUserArgs>) => {
     const { data, user, transaction, tokenData, files } = userCreateArgs;
@@ -123,14 +119,13 @@ export default class UserRepo extends BaseRepository<User> {
       ],
     });
 
-
-    let updatedUser = await this.getUser(user.id, transaction);
+    let updatedUser: any = await this.getUser(user.id, transaction);
     updatedUser = { ...parse(updatedUser), ...extra_data };
     return updatedUser;
   };
 
   readonly addUser = async (userCreateArgs: BuildUserArgs): Promise<BuildUserResp> => {
-    const { data, tokenData, transaction, shouldSentMail, files } = userCreateArgs;
+    const { data, tokenData, transaction } = userCreateArgs;
     let isRoleExists: Role;
 
     if (!data.role) {
@@ -164,14 +159,6 @@ export default class UserRepo extends BaseRepository<User> {
       tokenData,
       convert: false,
     });
-
-    const replacement = {
-      username: `${data.first_name} ${data.last_name}`,
-      password,
-    };
-    const allAdmins = await this.getAllUsersByRoleName(RoleEnum.ADMIN, ['id', 'email']);
-    const UserRole: any = parse(await this.roleRepository.get({ attributes: ['name'], where: { id: isRoleExists.id } }));
-
     return {
       userIdLangMap,
     };
@@ -255,7 +242,11 @@ export default class UserRepo extends BaseRepository<User> {
     return data;
   }
 
-  readonly bulkAddUser = async (bulkUserArgs: BuildBulkUserArgs, is_migration?: boolean, removeDuplicateEmails?: boolean) => {
+  readonly bulkAddUser = async (
+    bulkUserArgs: BuildBulkUserArgs,
+    is_migration?: boolean,
+    removeDuplicateEmails?: boolean,
+  ) => {
     const { data, tokenData, transaction, shouldSentMail, is_bulk_upload_mail } = bulkUserArgs;
     let duplicateEmails = [];
     if (removeDuplicateEmails) {
@@ -343,7 +334,11 @@ export default class UserRepo extends BaseRepository<User> {
             const userDataChanged = JSON.stringify(existingUser) !== JSON.stringify(newUser);
             if (userDataChanged) {
               const normalizedUpdateUsers = bulkUserCreateNormalizer([newUser]);
-              const updateNormalizer = await this.updateBulkNormalizer(existingUser, normalizedUpdateUsers, transaction);
+              const updateNormalizer = await this.updateBulkNormalizer(
+                existingUser,
+                normalizedUpdateUsers,
+                transaction,
+              );
               await User.update(updateNormalizer, { where: { id: existingUser.id }, transaction });
             }
           }
@@ -353,8 +348,6 @@ export default class UserRepo extends BaseRepository<User> {
 
     const createdUsers = await this.bulkCreate(userInsertData, { ignoreDuplicates: false, transaction });
     for (const createdUser of createdUsers) {
-
-
       const replacement = {
         username: `${createdUser.first_name} ${createdUser.last_name}`,
         password: emailPasswordMap[createdUser.email],
@@ -384,5 +377,4 @@ export default class UserRepo extends BaseRepository<User> {
       username: username,
     };
   };
-
 }
