@@ -1,7 +1,6 @@
-import { RoleEnum } from "@/common/constants/enum.constant";
-import Role from "@/models/role.model";
-import BaseRepository from "@/modules/common/base.repository";
-
+import { RoleEnum } from '../../../common/constants/enum.constant';
+import BaseRepository from '../../common/base.repository';
+import Role from '../../../models/role.model';
 
 export default class RoleRepo extends BaseRepository<Role> {
   constructor() {

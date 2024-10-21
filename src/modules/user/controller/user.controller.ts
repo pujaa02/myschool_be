@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import _ from 'lodash';
 import UserRepo from '../repository/user.repository';
-import { catchAsync } from '@/common/util';
-import { generalResponse } from '@/common/helper/response/generalResponse';
-import { HttpException } from '@/common/helper/response/httpException';
-import User from '@/models/user.model';
-import { queryBuildCases } from '@/common/constants/enum.constant';
-import { getAllDetails, getDetail } from '@/common/lib/query/querySetter/database.helper';
+import { catchAsync } from '../../../common/util';
+import { generalResponse } from '../../../common/helper/response/generalResponse';
+import { HttpException } from '../../../common/helper/response/httpException';
+import User from '../../../models/user.model';
+import { queryBuildCases } from '../../../common/constants/enum.constant';
+import { getAllDetails, getDetail } from '../../../common/lib/query/querySetter/database.helper';
 
 export default class UserController {
   private readonly userRepository: UserRepo = new UserRepo();

@@ -1,11 +1,11 @@
 import { Routes } from '@/common/interfaces/general/routes.interface';
-import authMiddleware from '@/middlewares/auth.middleware';
+import authMiddleware from '../../../middlewares/auth.middleware';
 // import { translateUserData } from '@/middlewares/translation.middleware';
-import validationMiddleware from '@/middlewares/validation.middleware';
+import validationMiddleware from '../../../middlewares/validation.middleware';
 import { Router } from 'express';
 import multer from 'multer';
 import AuthController from '../controller/auth.controller';
-import { ChangePasswordSchema, LoginSchema, RegisterSchema, ResetPasswordSchema } from '../validations/auth.validation';
+import { ChangePasswordSchema, LoginSchema, ResetPasswordSchema } from '../validations/auth.validation';
 
 class AuthRoute implements Routes {
   public path = '/auth';

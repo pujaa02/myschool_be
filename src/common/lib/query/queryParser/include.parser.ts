@@ -1,7 +1,7 @@
-import OrderParser from '@/common/lib/query/queryParser/order.parser';
-import { SelectParser } from '@/common/lib/query/queryParser/select.parser';
-import { GetIncludeQuery, IncludeAttribute } from '@/common/lib/query/queryParser/types';
-import WhereParser from '@/common/lib/query/queryParser/where.parser';
+import OrderParser from '../../../../common/lib/query/queryParser/order.parser';
+import { SelectParser } from '../../../../common/lib/query/queryParser/select.parser';
+import { GetIncludeQuery, IncludeAttribute } from '../../../../common/lib/query/queryParser/types';
+import WhereParser from '../../../../common/lib/query/queryParser/where.parser';
 import { Request } from 'express';
 import _ from 'lodash';
 import { Model, ModelCtor } from 'sequelize-typescript';
@@ -104,7 +104,8 @@ export default class IncludeParser<M extends Model> {
 
         if (typeof value !== 'string') {
           const whereClause =
-            value?.q && new WhereParser({ request: value?.q, model: includeModel as ModelCtor<M> })?.getQuery()?.whereQuery;
+            value?.q &&
+            new WhereParser({ request: value?.q, model: includeModel as ModelCtor<M> })?.getQuery()?.whereQuery;
 
           includeObj = {
             as: key,
@@ -116,7 +117,9 @@ export default class IncludeParser<M extends Model> {
             order: this.getSortQuery(value),
             limit: value.limit ? value.limit : this.getLimitQuery(value),
             offset: this.getOffsetQuery(value),
-            attributes: !this.isGroupBy ? value?.select && this.getIncludeSelect(value.select, includeModel as ModelCtor<M>) : [],
+            attributes: !this.isGroupBy
+              ? value?.select && this.getIncludeSelect(value.select, includeModel as ModelCtor<M>)
+              : [],
           };
           if (value.include) {
             includeObj.include = this._getIncludeQuery({ input: value.include, model: includeModel as ModelCtor<M> });

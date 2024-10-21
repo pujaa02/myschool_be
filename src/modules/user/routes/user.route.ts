@@ -1,19 +1,16 @@
-import { Routes } from '@/common/interfaces/general/routes.interface';
-import authMiddleware from '@/middlewares/auth.middleware';
-import checkRoleMiddleware from '@/middlewares/checkRole.middleware';
-import { fileUpload } from '@/middlewares/multer.middleware';
-import validationMiddleware from '@/middlewares/validation.middleware';
+import { Routes } from '../../../common/interfaces/general/routes.interface';
+import authMiddleware from '../../../middlewares/auth.middleware';
+import checkRoleMiddleware from '../../../middlewares/checkRole.middleware';
+import validationMiddleware from '../../../middlewares/validation.middleware';
 import { Router } from 'express';
 import UserController from '../controller/user.controller';
 import {
   bulkUploadSchema,
   createUserSchema,
-  deleteUserSocialAccountSchema,
-  getUserSchema,
   updateUserSchema,
   userUsernameParamSchema,
 } from '../validationSchema/user.validation';
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
+import { FeaturesEnum, PermissionEnum } from '../../../common/constants/enum.constant';
 
 export default class UserRoute implements Routes {
   public path = '/users';
@@ -29,7 +26,7 @@ export default class UserRoute implements Routes {
       .route(`${this.path}`)
       .post(
         // multer().none(),
-        fileUpload(1),
+        // fileUpload(1),
         authMiddleware,
         validationMiddleware(createUserSchema, 'body'),
         checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Create),
@@ -37,23 +34,23 @@ export default class UserRoute implements Routes {
       )
       .patch(
         authMiddleware,
-        fileUpload(1),
+        // fileUpload(1),
         checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Update),
         validationMiddleware(updateUserSchema, 'body'),
         this.userController.updateUser,
-      )
-      // .get(
-      //   authMiddleware,
-      //   validationMiddleware(getUserSchema, 'query'),
-      //   checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
-      //   this.userController.getUserDetails,
-      // );
+      );
+    // .get(
+    //   authMiddleware,
+    //   validationMiddleware(getUserSchema, 'query'),
+    //   checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
+    //   this.userController.getUserDetails,
+    // );
 
     this.router
       .route(`${this.path}/:username`)
       .patch(
         authMiddleware,
-        fileUpload(10),
+        // fileUpload(10),
         validationMiddleware(updateUserSchema, 'body'),
         checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Update),
         validationMiddleware(userUsernameParamSchema, 'params'),

@@ -1,7 +1,7 @@
-import { HttpException } from '@/common/helper/response/httpException';
-import { logger } from '@/common/util/logger';
-import User from '@/models/user.model';
-import BaseRepository from '@/modules/common/base.repository';
+import { HttpException } from '../../../../common/helper/response/httpException';
+import { logger } from '../../../../common/util/logger';
+import User from '../../../../models/user.model';
+import BaseRepository from '../../../../modules/common/base.repository';
 import { Request } from 'express';
 import _ from 'lodash';
 import { parse } from 'path';

@@ -1,23 +1,23 @@
-import { RoleEnum } from '@/common/constants/enum.constant';
-import { HttpException } from '@/common/helper/response/httpException';
-import { getModuleChildAndParent } from '@/common/helper/translation';
-import { DeleteArgsType } from '@/common/interfaces/general/database.interface';
-import { LanguageEnum } from '@/common/interfaces/general/general.interface';
-import { generateRandomPassword, findDuplicates, generateSlugifyForModel, parse } from '@/common/util';
-import db from '@/models';
+import { RoleEnum } from '../../../common/constants/enum.constant';
+import { HttpException } from '../../../common/helper/response/httpException';
+import { getModuleChildAndParent } from '../../../common/helper/translation';
+import { DeleteArgsType } from '../../../common/interfaces/general/database.interface';
+import { LanguageEnum } from '../../../common/interfaces/general/general.interface';
+import { generateRandomPassword, findDuplicates, generateSlugifyForModel, parse } from '../../../common/util';
+import db from '../../../models';
 import { Request } from 'express';
-import { USER_STATUS, UserAttributes } from '@/models/interfaces/user.model.interface';
-import LanguageModel from '@/models/language.model';
-import Role from '@/models/role.model';
-import User from '@/models/user.model';
-import { TokenDataInterface } from '@/modules/auth/interfaces/auth.interfaces';
-import BaseRepository from '@/modules/common/base.repository';
-import RoleRepo from '@/modules/role/repository/role.repository';
+import { USER_STATUS, UserAttributes } from '../../../models/interfaces/user.model.interface';
+import LanguageModel from '../../../models/language.model';
+import Role from '../../../models/role.model';
+import User from '../../../models/user.model';
+import { TokenDataInterface } from '../../../modules/auth/interfaces/auth.interfaces';
+import BaseRepository from '../../../modules/common/base.repository';
+import RoleRepo from '../../../modules/role/repository/role.repository';
 import _ from 'lodash';
 import { Transaction, Op, ModelCtor } from 'sequelize';
 import { BuildUserArgs, BuildUserResp, BuildBulkUserArgs } from '../interfaces/user.interfaces';
 import { bulkUserCreateNormalizer } from '../normalizer/user-bulk-create.normalizer';
-import { FILE_FIELD_ENUMS } from '@/common/constants/multer.constant';
+import { FILE_FIELD_ENUMS } from '../../../common/constants/multer.constant';
 
 export default class UserRepo extends BaseRepository<User> {
   readonly roleRepository = new RoleRepo();

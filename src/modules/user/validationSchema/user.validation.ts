@@ -1,6 +1,6 @@
-import { errorMessage } from '@/common/constants/validation.constant';
-import { joiCommon, paginationValidation } from '@/common/validations/common.validation';
-import { USER_STATUS } from '@/models/interfaces/user.model.interface';
+import { errorMessage } from '../../../common/constants/validation.constant';
+import { joiCommon, paginationValidation } from '../../../common/validations/common.validation';
+import { USER_STATUS } from '../../../models/interfaces/user.model.interface';
 import Joi from 'joi';
 
 const joiData = {

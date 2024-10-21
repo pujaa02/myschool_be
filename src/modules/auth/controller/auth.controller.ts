@@ -1,14 +1,14 @@
-import PermissionRepo from '@/modules/permission/repository/permission.repository';
-import RoleRepo from '@/modules/role/repository/role.repository';
-import RolePermissionRepo from '@/modules/rolePermission/repository/rolePermission.repository';
+import PermissionRepo from '../../../modules/permission/repository/permission.repository';
+import RoleRepo from '../../../modules/role/repository/role.repository';
+import RolePermissionRepo from '../../../modules/rolePermission/repository/rolePermission.repository';
 import { Request, Response } from 'express';
 import { Sequelize } from 'sequelize';
 import { LoginInterface } from '../interfaces/auth.interfaces';
-import { generalResponse } from '@/common/helper/response/generalResponse';
-import { catchAsync } from '@/common/util';
-import Feature from '@/models/feature.model';
-import Permission from '@/models/permission.model';
-import Role from '@/models/role.model';
+import { generalResponse } from '../../../common/helper/response/generalResponse';
+import { catchAsync } from '../../../common/util';
+import Feature from '../../../models/feature.model';
+import Permission from '../../../models/permission.model';
+import Role from '../../../models/role.model';
 import AuthRepo from '../repository/auth.repository';
 
 export default class AuthController {

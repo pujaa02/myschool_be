@@ -1,11 +1,11 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
-import { HttpException } from '@/common/helper/response/httpException';
-import { checkRoleMiddlewareData } from '@/middlewares/checkRole.middleware';
-import Feature from '@/models/feature.model';
-import Permission from '@/models/permission.model';
-import Role from '@/models/role.model';
-import RolePermission from '@/models/rolesPermissions.model';
-import BaseRepository from '@/modules/common/base.repository';
+import { FeaturesEnum, PermissionEnum } from '../../../common/constants/enum.constant';
+import { HttpException } from '../../../common/helper/response/httpException';
+import { checkRoleMiddlewareData } from '../../../middlewares/checkRole.middleware';
+import Feature from '../../../models/feature.model';
+import Permission from '../../../models/permission.model';
+import Role from '../../../models/role.model';
+import RolePermission from '../../../models/rolesPermissions.model';
+import BaseRepository from '../../../modules/common/base.repository';
 
 import { NextFunction, Request } from 'express';
 import _ from 'lodash';

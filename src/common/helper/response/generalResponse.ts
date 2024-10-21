@@ -1,5 +1,5 @@
-import { language } from '@/common/constants/enum.constant';
-import { JsonKeys } from '@/common/interfaces/general/general.interface';
+import { language } from '../../constants/enum.constant';
+import { JsonKeys } from '../../interfaces/general/general.interface';
 import { Request, Response } from 'express';
 import * as fs from 'fs';
 

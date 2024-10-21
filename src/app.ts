@@ -6,9 +6,9 @@ import cors from 'cors';
 import db from './models';
 import { Transaction } from 'sequelize';
 import { Routes } from './common/interfaces/general/routes.interface';
-import errorMiddleware from './middlewares/error.middleware';
 import { logger } from './common/util/logger';
 import * as http from 'http';
+import errorMiddleware from './middlewares/error.middleware';
 
 const app: Application = express();
 const env: string = NODE_ENV || 'development';

@@ -1,7 +1,7 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
-import { HttpException } from '@/common/helper/response/httpException';
-import { catchAsync } from '@/common/util';
-import RolePermissionRepo from '@/modules/rolePermission/repository/rolePermission.repository';
+import { FeaturesEnum, PermissionEnum } from '../common/constants/enum.constant';
+import { HttpException } from '../common/helper/response/httpException';
+import { catchAsync } from '../common/util';
+import RolePermissionRepo from '../modules/rolePermission/repository/rolePermission.repository';
 import { Request, RequestHandler } from 'express';
 import _ from 'lodash';
 

@@ -1,5 +1,5 @@
-import { generalResponse } from '@/common/helper/response/generalResponse';
-import { cleanObj } from '@/common/util';
+import { generalResponse } from '../common/helper/response/generalResponse';
+import { cleanObj } from '../common/util';
 import { RequestHandler } from 'express';
 
 type ErrorType = {

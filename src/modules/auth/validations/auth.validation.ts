@@ -1,6 +1,6 @@
 // ============= Import Packages ================
-import { errorMessage } from '@/common/constants/validation.constant';
-import { commonValidation, joiCommon } from '@/common/validations/common.validation';
+import { errorMessage } from '../../../common/constants/validation.constant';
+import { joiCommon } from '../../../common/validations/common.validation';
 import Joi from 'joi';
 // ==============================================
 
@@ -55,7 +55,6 @@ export const RegisterSchema = Joi.object({
 }).options({
   abortEarly: false,
 });
-
 
 export const LoginSchema = Joi.object({
   email: Joi.string()

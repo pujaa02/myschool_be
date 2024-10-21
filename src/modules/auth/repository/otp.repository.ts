@@ -1,9 +1,9 @@
 import * as bcrypt from 'bcrypt';
 import _ from 'lodash';
 import { ChangePasswordInterface, SetPasswordInterface } from '../interfaces/auth.interfaces';
-import { HttpException } from '@/common/helper/response/httpException';
-import UserRepo from '@/modules/user/repository/user.repository';
-import { parse } from '@/common/util';
+import { HttpException } from '../../../common/helper/response/httpException';
+import UserRepo from '../../../modules/user/repository/user.repository';
+import { parse } from '../../../common/util';
 
 export default class OtpRepo {
   private readonly userRepo = new UserRepo();

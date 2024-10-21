@@ -1,7 +1,7 @@
-import { FeaturesEnum, PermissionEnum } from '@/common/constants/enum.constant';
-import { Routes } from '@/common/interfaces/general/routes.interface';
-import authMiddleware from '@/middlewares/auth.middleware';
-import checkRoleMiddleware from '@/middlewares/checkRole.middleware';
+import { FeaturesEnum, PermissionEnum } from '../../../common/constants/enum.constant';
+import { Routes } from '../../../common/interfaces/general/routes.interface';
+import authMiddleware from '../../../middlewares/auth.middleware';
+import checkRoleMiddleware from '../../../middlewares/checkRole.middleware';
 import { Router } from 'express';
 import PermissionController from '../controller/permission.controller';
 

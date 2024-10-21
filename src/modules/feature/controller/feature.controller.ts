@@ -1,12 +1,12 @@
-import { generalResponse } from '@/common/helper/response/generalResponse';
-import { catchAsync } from '@/common/util';
-import Feature from '@/models/feature.model';
+import { generalResponse } from '../../../common/helper/response/generalResponse';
+import { catchAsync } from '../../../common/util';
+import Feature from '../../../models/feature.model';
 import { Request, Response } from 'express';
 import _ from 'lodash';
 import FeatureRepo from '../repository/feature.repository';
-import { queryBuildCases } from '@/common/constants/enum.constant';
-import SystemLogs from '@/models/systemLogs.model';
-import { getAllDetails } from '@/common/lib/query/querySetter/database.helper';
+import { queryBuildCases } from '../../../common/constants/enum.constant';
+import SystemLogs from '../../../models/systemLogs.model';
+import { getAllDetails } from '../../../common/lib/query/querySetter/database.helper';
 
 export default class FeatureController {
   private readonly featureRepository = new FeatureRepo();

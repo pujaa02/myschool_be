@@ -1,13 +1,12 @@
-import { generalResponse } from '@/common/helpers/response/generalResponse';
-import { HttpException } from '@/common/helpers/response/httpException';
-import { JsonKeys } from '@/common/interfaces/general/general.interface';
-import { logger } from '@/common/utils/logger';
+import { generalResponse } from '../common/helper/response/generalResponse';
+import { HttpException } from '../common/helper/response/httpException';
+import { JsonKeys } from '../common/interfaces/general/general.interface';
+import { logger } from '../common/util/logger';
 import axios from 'axios';
 import { NextFunction, Request, Response } from 'express';
 import { DatabaseError } from 'sequelize';
 
 const errorMiddleware = async (error: Error, req: Request, res: Response, next: NextFunction) => {
-  console.log('🚀 ~ errorMiddleware ~ error:', error);
   try {
     if (error instanceof HttpException) {
       const data = error.data || {};

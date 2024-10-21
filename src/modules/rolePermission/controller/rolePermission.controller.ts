@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import RolePermissionRepo from '../repository/rolePermission.repository';
-import { generalResponse } from '@/common/helper/response/generalResponse';
-import { catchAsync } from '@/common/util';
+import { generalResponse } from '../../../common/helper/response/generalResponse';
+import { catchAsync } from '../../../common/util';
 
 export default class RolePermissionController {
   private readonly rolePermissionRepository = new RolePermissionRepo();
