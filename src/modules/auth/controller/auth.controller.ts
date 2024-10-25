@@ -26,6 +26,13 @@ export default class AuthController {
   //   return generalResponse(req, res, user, 'REGISTER_SUCCESS', true);
   // });
 
+  /**
+   * user login Api
+   * @param {Request} req
+   * @param {Response} res
+   * @returns {Promise<void>}
+   */
+
   public login = catchAsync(async (req: Request, res: Response) => {
     const responseData = await this.authRepository.login(req.body as LoginInterface);
     return generalResponse(req, res, responseData, 'LOGIN_SUCCESS', false);

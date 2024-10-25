@@ -4,8 +4,9 @@ import { Request, Response } from 'express';
 import * as fs from 'fs';
 
 export const t = (req: Request, message: JsonKeys) => {
-  const languageData = setHeader(req);
-  const fileData = fs.readFileSync(`${process.cwd()}/src/common/translations/${languageData}.json`, 'utf-8');
+  // const languageData = setHeader(req);
+  const languageData = 'english';
+  const fileData = fs.readFileSync(`${process.cwd()}/src/common/translation/${languageData}.json`, 'utf-8');
   const jsonData = JSON.parse(fileData);
   return jsonData[message];
 };

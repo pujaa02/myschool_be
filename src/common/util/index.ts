@@ -264,7 +264,7 @@ const mergeArrayProps = (arr1, arr2, _props) => {
   return arr1?.map((e, i) => {
     const data = {
       ...e,
-      parent_table_id: !_.isUndefined(arr2[i]) || !_.isNull(arr2[i]) ? arr2[i]['id'] : null,
+      // parent_table_id: !_.isUndefined(arr2[i]) || !_.isNull(arr2[i]) ? arr2[i]['id'] : null,
       slug: arr2[i]['slug'],
     };
 
@@ -283,9 +283,9 @@ export const changeObject = (obj2) => {
         obj2[key] = obj2[key].map((e) => changeObject(e));
       } else {
         // Assign values for other types
-        if (key === 'od') {
-          obj2['parent_table_id'] = obj2[key];
-        }
+        // if (key === 'od') {
+        //   obj2['parent_table_id'] = obj2[key];
+        // }
         obj2[key] = obj2[key];
       }
     }
@@ -357,13 +357,13 @@ export function replaceKeyRecursively(obj) {
   const newObj = {};
 
   // Iterate over the keys of the object
-  for (const key in obj) {
-    // Replace 'id' with 'parent_table_id' in the key
-    const newKey = key === 'id' ? 'parent_table_id' : key;
+  // for (const key in obj) {
+  // Replace 'id' with 'parent_table_id' in the key
+  // const newKey = key === 'id' ? 'parent_table_id' : key;
 
-    // Recursively call the function for nested objects or arrays
-    newObj[newKey] = replaceKeyRecursively(obj[key]);
-  }
+  // Recursively call the function for nested objects or arrays
+  // newObj[newKey] = replaceKeyRecursively(obj[key]);
+  // }
 
   return newObj;
 }

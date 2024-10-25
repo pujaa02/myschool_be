@@ -31,7 +31,7 @@ const joiData = {
   timezone: joiCommon.joiString.label('Timezone').allow('', null),
   profile_image: Joi.any(),
   role: joiCommon.joiNumber.label('Role').allow('', null),
-  is_head: joiCommon.joiBoolean.label('Is department head').allow('', null),
+  // is_head: joiCommon.joiBoolean.label('Is department head').allow('', null),
   toastMsg: joiCommon.joiString.label('Toast Message'),
 };
 
@@ -86,7 +86,7 @@ export const createUserSchema = Joi.object({
 export const getUserSchema = Joi.object().keys({
   ...paginationValidation,
   status: joiCommon.joiString.label('Status'),
-  is_head: Joi.any(),
+  // is_head: Joi.any(),
   role: joiCommon.joiString,
   select: joiCommon.joiBoolean,
   ignore_is_active: joiCommon.joiBoolean,
@@ -114,7 +114,7 @@ export const updateUserSchema = Joi.object({
     then: managerDataSchema,
     otherwise: managerDataSchema.optional(),
   }).label('Manager Data'),
-  is_head: joiCommon.joiBoolean.label('Is department head').optional(),
+  // is_head: joiCommon.joiBoolean.label('Is department head').optional(),
 }).options({
   abortEarly: false,
 });
@@ -148,7 +148,7 @@ export const bulkUploadUserSchema = Joi.object({
   last_name: joiData.last_name.required(),
   contact: joiData.contact.required(),
   email: joiData.email.required(),
-  is_head: joiCommon.joiBoolean.label('Is department head').optional(),
+  // is_head: joiCommon.joiBoolean.label('Is department head').optional(),
 
   trainer: Joi.when('role', {
     is: 3,

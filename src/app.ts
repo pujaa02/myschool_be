@@ -33,7 +33,6 @@ function initializeMiddleWares() {
       const t: Transaction = await db.transaction();
       req.transaction = t;
     }
-
     next();
   });
 }

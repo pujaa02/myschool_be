@@ -1,4 +1,4 @@
-import { LanguageEnum } from '@/common/interfaces/general/general.interface';
+// import { LanguageEnum } from '@/common/interfaces/general/general.interface';
 import { RequiredKey } from './common.model.interface';
 export enum USER_STATUS {
   ACTIVE = 'ACTIVE',
@@ -18,7 +18,7 @@ export interface UserAttributes {
   first_name?: string;
   last_name?: string;
   full_name?: string;
-  is_head?: boolean;
+  // is_head?: boolean;
   username?: string;
   contact?: string;
   profile_image?: string;
@@ -32,8 +32,8 @@ export interface UserAttributes {
   address2?: string;
   city?: string;
   state?: number;
-  secret_2fa?: string;
-  two_factor_enabled?: boolean;
+  // secret_2fa?: string;
+  // two_factor_enabled?: boolean;
   country?: number;
   zip?: string;
   active?: USER_STATUS;
@@ -41,9 +41,9 @@ export interface UserAttributes {
   last_login_time?: Date | string;
   role_id?: number;
   pass_logs?: string;
-  last_active_time?: Date | string;
-  parent_table_id?: number;
-  language?: LanguageEnum;
+  // last_active_time?: Date | string;
+  // parent_table_id?: number;
+  // language?: LanguageEnum;
   created_at?: Date | string;
   updated_at?: Date | string;
   deleted_at?: Date | string;

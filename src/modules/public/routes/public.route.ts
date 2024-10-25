@@ -12,7 +12,13 @@ class PublicRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/getCountriesJson`, this.publicController.getLoggedIn);
+    this.router.get(
+      `${this.path}/getCountriesJson`,
+      () => {
+        console.log('countryyyyyyyyyyyyy');
+      },
+      this.publicController.getLoggedIn,
+    );
     // this.router.get(`${this.path}/getLanguages`, this.publicController.getLanguages);
     // this.router.get(`${this.path}/getDefaultLanguage`, this.publicController.getDefaultLanguage);
   }

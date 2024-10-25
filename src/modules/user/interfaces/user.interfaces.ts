@@ -34,7 +34,7 @@ export interface BulkUploadBody {
     username?: string;
     active: string;
     role?: number;
-    is_head?: boolean;
+    // is_head?: boolean;
     password?: string;
     trainer?: {
       hourly_rate: number;
@@ -64,7 +64,7 @@ export interface UserRelationalDataMap {
       contact: string;
       active: string;
       role: number;
-      is_head?: boolean;
+      // is_head?: boolean;
     };
     trainer?: {
       hourly_rate?: number;

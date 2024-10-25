@@ -1,5 +1,5 @@
 import { RoleEnum } from '../common/constants/enum.constant';
-import { LanguageEnum } from '../common/interfaces/general/general.interface';
+// import { LanguageEnum } from '../common/interfaces/general/general.interface';
 import { logger } from '../common/util/logger';
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from '../config';
 import { USER_STATUS, UserAttributes } from '../models/interfaces/user.model.interface';
@@ -14,7 +14,7 @@ const adminUser: UserAttributes = {
   password: ADMIN_PASSWORD,
   active: USER_STATUS.ACTIVE,
   verified: true,
-  language: LanguageEnum.English,
+  // language: LanguageEnum.English,
 };
 
 const addAdminUser = async () => {

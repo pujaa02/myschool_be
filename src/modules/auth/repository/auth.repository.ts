@@ -61,7 +61,7 @@ export default class AuthRepo extends BaseRepository<User> {
           user: {
             verified: user.verified,
             username: user.username,
-            secret_2fa: user.secret_2fa,
+            // secret_2fa: user.secret_2fa,
             role: user.role,
             first_name: user.first_name,
             last_name: user.last_name,

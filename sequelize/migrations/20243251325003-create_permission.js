@@ -16,7 +16,7 @@ module.exports = {
         { transaction: t },
       );
       await queryInterface.addIndex('permissions', {
-        name: 'unique_name_uk',
+        name: 'unique_name_uk_permissions',
         fields: ['name'],
         unique: true,
         where: {

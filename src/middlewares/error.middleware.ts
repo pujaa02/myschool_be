@@ -1,7 +1,7 @@
 import { generalResponse } from '../common/helper/response/generalResponse';
+import { logger } from '../common/util/logger';
 import { HttpException } from '../common/helper/response/httpException';
 import { JsonKeys } from '../common/interfaces/general/general.interface';
-import { logger } from '../common/util/logger';
 import axios from 'axios';
 import { NextFunction, Request, Response } from 'express';
 import { DatabaseError } from 'sequelize';

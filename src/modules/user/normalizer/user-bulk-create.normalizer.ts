@@ -12,7 +12,7 @@ export const bulkUserCreateNormalizer = (users: BulkUploadBody['users']): UserRe
         contact: user.contact,
         active: user.active,
         role: user.role,
-        is_head: user.is_head,
+        // is_head: user.is_head,
       },
     };
   });

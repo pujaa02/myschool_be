@@ -24,7 +24,7 @@ import Sensation from './sensation.model';
 import SensationComment from './sensationComment.model';
 import SensationLike from './sensationLike.model';
 import Student from './student.model';
-import { LanguageEnum } from '../common/interfaces/general/general.interface';
+// import { LanguageEnum } from '../common/interfaces/general/general.interface';
 @Table({
   timestamps: true,
   paranoid: true,
@@ -51,11 +51,11 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   @Column(DataTypes.STRING)
   last_name: string;
 
-  @Column(DataTypes.STRING)
-  secret_2fa: string;
+  // @Column(DataTypes.STRING)
+  // secret_2fa: string;
 
-  @Column(DataTypes.BOOLEAN)
-  two_factor_enabled: boolean;
+  // @Column(DataTypes.BOOLEAN)
+  // two_factor_enabled: boolean;
 
   @Column(DataTypes.VIRTUAL)
   get full_name() {
@@ -125,15 +125,15 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   @Column
   role_id: number;
 
-  @Default(false)
-  @Column(DataTypes.BOOLEAN)
-  is_head: boolean;
+  // @Default(false)
+  // @Column(DataTypes.BOOLEAN)
+  // is_head: boolean;
 
-  @Column({
-    defaultValue: LanguageEnum.English,
-    type: DataTypes.ENUM(...Object.values(LanguageEnum)),
-  })
-  language: LanguageEnum;
+  // @Column({
+  //   defaultValue: LanguageEnum.English,
+  //   type: DataTypes.ENUM(...Object.values(LanguageEnum)),
+  // })
+  // language: LanguageEnum;
 
   @CreatedAt
   created_at: Date;
@@ -147,11 +147,11 @@ export default class User extends Model<UserAttributes, RequiredUserAttributes> 
   @Column
   pass_logs: string;
 
-  @Column
-  parent_table_id: number;
+  // @Column
+  // parent_table_id: number;
 
-  @Column
-  last_active_time: Date | null;
+  // @Column
+  // last_active_time: Date | null;
 
   // =========== Associations =============
 

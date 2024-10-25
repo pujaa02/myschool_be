@@ -87,7 +87,7 @@ const setUserData = async (req: Request, user: User, _next: NextFunction) => {
         'created_at',
         'updated_at',
         'role_id',
-        'is_head',
+        // 'is_head',
       ],
       // raw: true,
     });

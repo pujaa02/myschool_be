@@ -2,12 +2,12 @@ import { RoleEnum } from '../../../common/constants/enum.constant';
 import { HttpException } from '../../../common/helper/response/httpException';
 import { getModuleChildAndParent } from '../../../common/helper/translation';
 import { DeleteArgsType } from '../../../common/interfaces/general/database.interface';
-import { LanguageEnum } from '../../../common/interfaces/general/general.interface';
+// import { LanguageEnum } from '../../../common/interfaces/general/general.interface';
 import { generateRandomPassword, findDuplicates, generateSlugifyForModel, parse } from '../../../common/util';
 import db from '../../../models';
 import { Request } from 'express';
 import { USER_STATUS, UserAttributes } from '../../../models/interfaces/user.model.interface';
-import LanguageModel from '../../../models/language.model';
+// import LanguageModel from '../../../models/language.model';
 import Role from '../../../models/role.model';
 import User from '../../../models/user.model';
 import { TokenDataInterface } from '../../../modules/auth/interfaces/auth.interfaces';
@@ -191,9 +191,9 @@ export default class UserRepo extends BaseRepository<User> {
         'active',
         'verified',
         'role_id',
-        'language',
-        'chat_user_status',
-        'last_active_time',
+        // 'language',
+        // 'chat_user_status',
+        // 'last_active_time',
       ],
       transaction,
     });
@@ -247,13 +247,13 @@ export default class UserRepo extends BaseRepository<User> {
     const normalizedUsers = bulkUserCreateNormalizer(usersToInsert);
     const emailPasswordMap: { [key: string]: string } = {};
 
-    const language = await LanguageModel.findOne({
-      where: {
-        is_default: true,
-      },
-      order: [['is_default', 'DESC']],
-      transaction,
-    });
+    // const language = await LanguageModel.findOne({
+    //   where: {
+    //     is_default: true,
+    //   },
+    //   order: [['is_default', 'DESC']],
+    //   transaction,
+    // });
 
     const userInsertData = await Promise.all(
       usersToInsert.map(async (user) => {
@@ -284,7 +284,7 @@ export default class UserRepo extends BaseRepository<User> {
           active: USER_STATUS.ACTIVE,
           role_id: isRoleExists.id,
           added_by: tokenData?.user?.id,
-          language: language.name as LanguageEnum,
+          // language: language.name as LanguageEnum,
         };
       }),
     );

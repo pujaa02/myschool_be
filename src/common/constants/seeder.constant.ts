@@ -30,7 +30,7 @@ export const rolePermissionData = [
   {
     role: RoleEnum.Admin,
     featureName: FeaturesEnum.User,
-    access: `${RoleEnum.Admin},${RoleEnum.Teacher},${RoleEnum.Student}`,
+    access: `${RoleEnum.Admin},${RoleEnum.Teacher}`,
     permission: [PermissionEnum.Create, PermissionEnum.Update, PermissionEnum.Delete, PermissionEnum.View],
   },
   {

@@ -50,7 +50,7 @@ const addPermissions = async () => {
           role_permission_key: `${roleMap.get(rolePermission.role)}${featureMap.get(
             rolePermission.featureName,
           )}${permissionMap.get(singlePermission)}`,
-          access: rolePermission?.access || '',
+          // access: rolePermission?.access || '',
         });
       }
     }
