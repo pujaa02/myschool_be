@@ -21,7 +21,7 @@ class AuthRoute implements Routes {
     this.router.post(
       `${this.path}/login`,
       // multer().none(),
-      // validationMiddleware(LoginSchema, 'body'),
+      validationMiddleware(LoginSchema, 'body'),
       this.authController.login,
     );
 
