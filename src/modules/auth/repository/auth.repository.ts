@@ -1,9 +1,13 @@
-import * as bcrypt from 'bcrypt';
 // import { Request } from 'express';
 import jwt from 'jsonwebtoken';
-import { ChangePasswordInterface, LoginInterface, SetPasswordInterface } from '../interfaces/auth.interfaces';
+import {
+  AuthRegisterReqInterface,
+  ChangePasswordInterface,
+  LoginInterface,
+  SetPasswordInterface,
+} from '../interfaces/auth.interfaces';
 import { HttpException } from '../../../common/helper/response/httpException';
-import { SECRET_KEY } from '../../../config';
+import { ARGON_SALT_LENGTH, SECRET_KEY } from '../../../config';
 import { USER_STATUS } from '../../../models/interfaces/user.model.interface';
 import Role from '../../../models/role.model';
 import User from '../../../models/user.model';
@@ -12,6 +16,7 @@ import UserRepo from '../../../modules/user/repository/user.repository';
 import { RoleEnum } from '../../../common/constants/enum.constant';
 import { parse } from '../../../common/util';
 import OtpRepo from './otp.repository';
+import * as argon2 from 'argon2';
 // import { authRegisterReq } from '../normalizer/auth.normalizer';
 
 export default class AuthRepo extends BaseRepository<User> {
@@ -27,11 +32,21 @@ export default class AuthRepo extends BaseRepository<User> {
     });
   };
 
-  // readonly registerUser = async (req: Request) => {
-  //   const { tokenData, transaction } = req;
-  //   const result = authRegisterReq(req);
-  //   return result;
-  // };
+  public registerUser = async (data: AuthRegisterReqInterface) => {
+    const { first_name, last_name, password, email, birth_date, user_role } = data;
+    const argonPass = await argon2.hash(password, { saltLength: +ARGON_SALT_LENGTH });
+    const result = await this.userRepository.create({
+      email,
+      first_name,
+      last_name,
+      username: `${first_name}@${last_name}`,
+      password: argonPass,
+      active: USER_STATUS.ACTIVE,
+      verified: true,
+      birth_date: new Date(birth_date),
+      role_id: user_role,
+    });
+  };
 
   logout = async (reqUser: User) => {
     await this.userRepository.update({ verified: false }, { where: { id: reqUser.id } });
@@ -77,7 +92,9 @@ export default class AuthRepo extends BaseRepository<User> {
 
   public checkPassword = async (data: LoginInterface, user: User) => {
     if (!user.password) throw new HttpException(400, 'PASSWORD_NOT_SET');
-    const isMatch = await bcrypt.compare(data.password, parse(user).password);
+    let isMatch = false;
+    const userPass = user.password;
+    isMatch = await argon2.verify(userPass, data.password);
     if (isMatch) return true;
     else throw new HttpException(400, 'PASSWORD_ERROR', null, true);
   };

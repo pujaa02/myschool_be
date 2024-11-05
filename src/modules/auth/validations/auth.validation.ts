@@ -1,57 +1,62 @@
 // ============= Import Packages ================
+import { USER_STATUS } from '../../../models/interfaces/user.model.interface';
 import { errorMessage } from '../../../common/constants/validation.constant';
 import { joiCommon } from '../../../common/validations/common.validation';
 import Joi from 'joi';
 // ==============================================
 
-export const RegisterSchema = Joi.object({
-  first_name: Joi.string()
-    .required()
-    .max(50)
-    .label('First name')
-    .messages({ ...errorMessage }),
-
-  last_name: Joi.string()
-    .required()
-    .max(50)
-    .label('Last name')
-    .messages({ ...errorMessage }),
-
-  email: Joi.string()
-    .required()
+const joiData = {
+  id: joiCommon.joiNumber.label('UserId'),
+  user_role: joiCommon.joiNumber.label('user_role'),
+  first_name: joiCommon.joiString.max(50).label('First Name').allow('', null),
+  last_name: joiCommon.joiString.max(50).label('Last Name').allow('', null),
+  username: joiCommon.joiString.label('Username').allow('', null),
+  email: joiCommon.joiString
+    .email({ ignoreLength: true })
     .max(100)
     .label('Email')
+    .messages({ ...errorMessage, 'string.email': '{#label} must be a valid email' })
     .lowercase()
-    .options({ convert: true })
-    .messages({ ...errorMessage, 'string.email': '{#label} must be a valid email' }),
-
-  password: Joi.string()
-    .min(8)
-    .max(16)
-    .required()
+    .options({ convert: true }),
+  phone: joiCommon.joiString.label('Phone number').allow('', null),
+  mobile: joiCommon.joiString.label('Mobile number').allow('', null),
+  password: joiCommon.joiString
+    .min(12)
+    .max(254)
     .label('Password')
+    .pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{12,}$/)
     .messages({
       ...errorMessage,
       'string.pattern.base':
         '{#label} must have at least one uppercase character, one lowercase character, one numeric character and one special character',
     }),
-  mobile: Joi.string()
-    .max(50)
-    .label('Mobile number')
-    .messages({ ...errorMessage })
-    .allow('', null),
+  confirmPassword: joiCommon.joiString.label('Confirm Password').allow('', null),
+  date_format: joiCommon.joiString.label('Date Format'),
+  timezone: joiCommon.joiString.label('Time Zone').allow('', null),
+  user_signature: joiCommon.joiString.label('User Signature').allow('', null),
+  website: joiCommon.joiString.label('Website').allow('', null),
+  gender: joiCommon.joiString.label('Gender').allow('', null),
+  address1: joiCommon.joiString.label('Address1').allow('', null),
+  address2: joiCommon.joiString.label('Address2').allow('', null),
+  city: joiCommon.joiString.label('City').allow('', null),
+  county: joiCommon.joiString.label('County').allow('', null),
+  state_id: joiCommon.joiNumber.label('State').allow('', null),
+  country_id: joiCommon.joiNumber.label('Country').allow('', null),
+  zip: joiCommon.joiString.label('Postal code').allow('', null),
+  verified: joiCommon.joiBoolean,
+  birth_date: joiCommon.joiDate.label('Birth date').allow('', null),
+  added_by: joiCommon.joiNumber.label('Admin User').allow('', null),
+  user_status: joiCommon.joiString.valid(...Object.keys(USER_STATUS)).label('Status'),
+  profile_image: Joi.any(),
+  toastMsg: joiCommon.joiString.allow('', null),
+};
 
-  organizationName: Joi.string()
-    .label('organizationName')
-    .messages({ ...errorMessage })
-    .allow('', null),
-
-  organizationCategory: Joi.string()
-    .label('organizationCategory')
-    .messages({ ...errorMessage })
-    .allow('', null),
-  timezone: joiCommon.joiString.label('Time Zone'),
-  initial_color: Joi.any(),
+export const RegisterSchema = Joi.object({
+  ...joiData,
+  first_name: joiData.first_name.required(),
+  last_name: joiData.last_name.required(),
+  password: joiData.password.required(),
+  email: joiData.email.required(),
 }).options({
   abortEarly: false,
 });

@@ -5,7 +5,7 @@ import validationMiddleware from '../../../middlewares/validation.middleware';
 import { Router } from 'express';
 import multer from 'multer';
 import AuthController from '../controller/auth.controller';
-import { ChangePasswordSchema, LoginSchema, ResetPasswordSchema } from '../validations/auth.validation';
+import { ChangePasswordSchema, LoginSchema, RegisterSchema, ResetPasswordSchema } from '../validations/auth.validation';
 
 class AuthRoute implements Routes {
   public path = '/auth';
@@ -29,12 +29,12 @@ class AuthRoute implements Routes {
     this.router.post(`${this.path}/logout`, multer().none(), authMiddleware, this.authController.logout);
 
     // Register route
-    // this.router.post(
-    //   `${this.path}/register`,
-    //   fileUpload(1),
-    //   validationMiddleware(RegisterSchema, 'body'),
-    //   this.authController.registerUser,
-    // );
+    this.router.post(
+      `${this.path}/register`,
+      // fileUpload(1),
+      validationMiddleware(RegisterSchema, 'body'),
+      this.authController.registerUser,
+    );
 
     // Change Password
     this.router.post(
