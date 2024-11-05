@@ -12,6 +12,7 @@ module.exports = {
           permission_id: { type: Sequelize.INTEGER, allowNull: false },
           feature_id: { type: Sequelize.INTEGER, allowNull: false },
           role_permission_key: { type: Sequelize.INTEGER, allowNull: false, unique: true },
+          access: { type: Sequelize.STRING, allowNull: false },
           created_at: { type: Sequelize.DATE, allowNull: false, defaultValue: Sequelize.NOW },
           updated_at: { type: Sequelize.DATE, allowNull: false },
           deleted_at: { type: Sequelize.DATE },

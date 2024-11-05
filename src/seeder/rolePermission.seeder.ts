@@ -50,7 +50,7 @@ const addPermissions = async () => {
           role_permission_key: `${roleMap.get(rolePermission.role)}${featureMap.get(
             rolePermission.featureName,
           )}${permissionMap.get(singlePermission)}`,
-          // access: rolePermission?.access || '',
+          access: rolePermission?.access || '',
         });
       }
     }
@@ -70,7 +70,7 @@ const addPermissions = async () => {
     );
 
     if (allExistingPermission?.length > 0) {
-      for (const createData of allExistingPermission) {
+      for (const createData of allExistingPermission) {        
         const foundedData = await rolePermissionRepo.get({ where: { ...createData } });
         if (_.isNull(foundedData)) {
           await RolePermission.create(createData);

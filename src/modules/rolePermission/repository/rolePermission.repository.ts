@@ -27,7 +27,7 @@ export default class RolePermissionRepo extends BaseRepository<RolePermission> {
         { model: Feature, where: { name: featureName } },
         { model: Permission, where: { name: permissionName } },
       ],
-      // where: { role_id: roleId },
+      where: { role_id: roleId },
     });
     if (response) {
       if (featureName === FeaturesEnum.User) {
