@@ -37,3 +37,11 @@ export const queryBuildCases = {
   getAllRoleWiseData: 'getAllRoleWiseData',
   getFeatureDropdown: 'getFeatureDropdown',
 };
+
+export enum Super {
+  FIRST_NAME = 'MySchool',
+  LAST_NAME = 'Admin',
+  EMAIL = 'myschool@gmail.com',
+  PASSWORD = 'MySchool@12345',
+  USERNAME = 'mySchool@admin',
+}
