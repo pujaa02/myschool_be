@@ -9,6 +9,7 @@ import { Routes } from './common/interfaces/general/routes.interface';
 import { logger } from './common/util/logger';
 import * as http from 'http';
 import errorMiddleware from './middlewares/error.middleware';
+import { initializeSocket } from './modules/socket';
 
 const app: Application = express();
 const env: string = NODE_ENV || 'development';
@@ -61,7 +62,7 @@ export const initializeApp = async (apiRoutes: Routes[]) => {
   initializeErrorHandling();
   handle404();
   const server = http.createServer(app);
-  //   socket.connect(server);
+  initializeSocket(server);
   server.listen(port, () => {
     logger.info(`=================================`);
     logger.info(`======= ENV: ${env} ========`);

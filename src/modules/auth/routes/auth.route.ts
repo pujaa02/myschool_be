@@ -8,9 +8,9 @@ import AuthController from '../controller/auth.controller';
 import { ChangePasswordSchema, LoginSchema, RegisterSchema, ResetPasswordSchema } from '../validations/auth.validation';
 
 class AuthRoute implements Routes {
-  public path = '/auth';
-  public router = Router();
-  public authController = new AuthController();
+  public readonly path = '/auth';
+  public readonly router = Router();
+  public readonly authController = new AuthController();
 
   constructor() {
     this.initializeRoutes();

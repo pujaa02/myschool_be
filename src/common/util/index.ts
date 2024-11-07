@@ -496,3 +496,7 @@ export const convertObjectToKeyValuePairs = (obj) => {
 
   return keyValuePairs;
 };
+
+export const handleErrorMessage = (value: any) => {
+  return value?.message ? value?.message : value;
+};
