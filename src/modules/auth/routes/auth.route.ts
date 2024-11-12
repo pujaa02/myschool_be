@@ -1,5 +1,5 @@
 import { Routes } from '@/common/interfaces/general/routes.interface';
-import authMiddleware from '../../../middlewares/auth.middleware';
+// import authMiddleware from '../../../middlewares/auth.middleware';
 // import { translateUserData } from '@/middlewares/translation.middleware';
 import validationMiddleware from '../../../middlewares/validation.middleware';
 import { Router } from 'express';
@@ -26,7 +26,9 @@ class AuthRoute implements Routes {
     );
 
     // logout route
-    this.router.post(`${this.path}/logout`, multer().none(), authMiddleware, this.authController.logout);
+    this.router.post(`${this.path}/logout`, multer().none(), 
+    // authMiddleware,
+     this.authController.logout);
 
     // Register route
     this.router.post(
@@ -39,7 +41,7 @@ class AuthRoute implements Routes {
     // Change Password
     this.router.post(
       `${this.path}/change-password`,
-      authMiddleware,
+      // authMiddleware(false, true),
       validationMiddleware(ChangePasswordSchema, 'body'),
       this.authController.changePassword,
     );
@@ -55,7 +57,6 @@ class AuthRoute implements Routes {
     this.router.post(
       `${this.path}/set-password`,
       multer().none(),
-      authMiddleware,
       validationMiddleware(ResetPasswordSchema, 'body'),
       this.authController.setPassword,
     );
@@ -69,7 +70,9 @@ class AuthRoute implements Routes {
     );
 
     // Get Logged In
-    this.router.get(`${this.path}/getLoggedIn`, authMiddleware, this.authController.getLoggedIn);
+    this.router.get(`${this.path}/getLoggedIn`,
+      //  authMiddleware ,
+       this.authController.getLoggedIn);
   }
 }
 

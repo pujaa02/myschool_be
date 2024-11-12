@@ -18,22 +18,39 @@ export const setHeader = (req: Request) => {
   return languageData;
 };
 
-export const generalResponse = async (
-  request: Request,
+// export const generalResponse = async (
+//   request: Request,
+//   response: Response,
+//   data: any = null,
+//   message: JsonKeys,
+//   toast = false,
+//   responseType = 'success',
+//   statusCode = 200,
+// ) => {
+//   message = t(request, message);
+
+//   if (request.transaction) {
+//     if (responseType === 'success') await request.transaction.commit();
+//     else await request.transaction.rollback();
+//   }
+
+//   response.status(statusCode).send({
+//     data,
+//     message,
+//     toast,
+//     responseType,
+//   });
+// };
+
+
+export const generalResponse = (
   response: Response,
   data: any = null,
-  message: JsonKeys,
-  toast = false,
+  message = '',
   responseType = 'success',
+  toast = false,
   statusCode = 200,
 ) => {
-  message = t(request, message);
-
-  if (request.transaction) {
-    if (responseType === 'success') await request.transaction.commit();
-    else await request.transaction.rollback();
-  }
-
   response.status(statusCode).send({
     data,
     message,

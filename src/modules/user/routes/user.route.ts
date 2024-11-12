@@ -1,18 +1,12 @@
-import { Routes } from '../../../common/interfaces/general/routes.interface';
-import authMiddleware from '../../../middlewares/auth.middleware';
-import checkRoleMiddleware from '../../../middlewares/checkRole.middleware';
-import validationMiddleware from '../../../middlewares/validation.middleware';
 import { Router } from 'express';
+import validationMiddleware from '../../../middlewares/validation.middleware';
+import { Routes } from '../../../common/interfaces/general/routes.interface';
 import UserController from '../controller/user.controller';
-import {
-  bulkUploadSchema,
-  createUserSchema,
-  updateUserSchema,
-  userUsernameParamSchema,
-} from '../validationSchema/user.validation';
-import { FeaturesEnum, PermissionEnum } from '../../../common/constants/enum.constant';
+import { createUserSchema, updateUserSchema } from '../validationSchema/user.validation';
+import { BasePermissionGroups, PermissionTypes } from '../../../common/constants/permissionGroup.constants';
+import { checkPermission } from '../../../middlewares/permission.middleware';
 
-export default class UserRoute implements Routes {
+class UserRoute implements Routes {
   public path = '/users';
   public router = Router();
   public userController = new UserController();
@@ -22,61 +16,80 @@ export default class UserRoute implements Routes {
   }
 
   private initializeRoutes() {
+    // post api
     this.router
       .route(`${this.path}`)
       .post(
-        // multer().none(),
-        // fileUpload(1),
-        authMiddleware,
+        // authMiddleware(),
+        checkPermission(BasePermissionGroups.USER, PermissionTypes.CREATE),
+        // fileUploadWasabi(25),
         validationMiddleware(createUserSchema, 'body'),
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Create),
         this.userController.createUser,
       )
-      .patch(
-        authMiddleware,
-        // fileUpload(1),
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Update),
-        validationMiddleware(updateUserSchema, 'body'),
-        this.userController.updateUser,
-      );
-    // .get(
-    //   authMiddleware,
-    //   validationMiddleware(getUserSchema, 'query'),
-    //   checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
-    //   this.userController.getUserDetails,
-    // );
-
-    this.router
-      .route(`${this.path}/:username`)
-      .patch(
-        authMiddleware,
-        // fileUpload(10),
-        validationMiddleware(updateUserSchema, 'body'),
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Update),
-        validationMiddleware(userUsernameParamSchema, 'params'),
-
-        this.userController.updateUser,
-      )
-      // .get(
-      //   authMiddleware,
-      //   checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.View),
-      //   validationMiddleware(userUsernameParamSchema, 'params'),
-      //   this.userController.getUserDetailsById,
+      // .put(
+      //   // authMiddleware(),
+      //   checkPermission(BasePermissionGroups.USER, PermissionTypes.UPDATE),
+      //   // fileUploadWasabi(10),
+      //   validationMiddleware(updateUserSchema, 'body'),
+      //   this.userController.updateUser,
       // )
-      .delete(
-        authMiddleware,
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Delete),
-        validationMiddleware(userUsernameParamSchema, 'params'),
-        this.userController.deleteUser,
-      );
+      // .delete(
+      //   // authMiddleware(),
+      //   checkPermission(BasePermissionGroups.USER, PermissionTypes.DELETE),
+      //   validationMiddleware(userDeleteIdSchema, 'body'),
+      //   this.userController.deleteAllUser,
+      // )
+      // .get(
+      //   // authMiddleware(),
+      //   checkPermission(BasePermissionGroups.USER, PermissionTypes.READ),
+      //   this.userController.getUsers,
+      // );
 
-    this.router
-      .route(`${this.path}/bulkInsert`)
-      .post(
-        authMiddleware,
-        validationMiddleware(bulkUploadSchema, 'body'),
-        checkRoleMiddleware(FeaturesEnum.User, PermissionEnum.Create),
-        this.userController.bulkCreateUser,
-      );
+    this.router.get(`${this.path}/logged-in-user`,
+      //  authMiddleware(true, true), 
+       this.userController.getLoggedInUser);
+
+    // this.router
+    //   .route(`${this.path}/get-data`)
+    //   .post(
+    //     // authMiddleware(),
+    //     queryParser,
+    //     checkPermission(BasePermissionGroups.USER, PermissionTypes.READ),
+    //     this.userController.getUsers,
+    //   );
+
+    // // get api
+    // this.router
+    //   .route(`${this.path}/get-descendants-users`)
+    //   .get(
+    //     // authMiddleware(),
+    //     validationMiddleware(descendantsUsersQuery, 'query'),
+    //     this.userController.getDescendantsUsers,
+    //   );
+
+    // this.router
+    //   .route(`${this.path}/get-hierarchy-users`)
+    //   .get(
+    //     // authMiddleware(),
+    //      validationMiddleware(hierarchyUsersQuery, 'query'), this.userController.getHierarchyUsers);
+
+    // this.router
+    //   .route(`${this.path}/:id(\\d+)`)
+    //   .put(
+    //     // authMiddleware(),
+    //     checkPermission(BasePermissionGroups.USER, PermissionTypes.UPDATE),
+    //     // fileUploadWasabi(10),
+    //     validationMiddleware(userIdSchema, 'params'),
+    //     validationMiddleware(updateUserSchema, 'body'),
+    //     this.userController.updateUser,
+    //   )
+    //   .get(
+    //     // authMiddleware(),
+    //     checkPermission(BasePermissionGroups.USER, PermissionTypes.READ),
+    //     validationMiddleware(userIdSchema, 'params'),
+    //     this.userController.getUserById,
+    //   );
   }
 }
+
+export default UserRoute;

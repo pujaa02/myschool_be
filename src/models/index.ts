@@ -20,6 +20,7 @@ import { logger } from '../common/util/logger';
 import Feature from './feature.model';
 import LanguageModel from './language.model';
 import SystemLogs from './systemLogs.model';
+import UserOrganization from './userOrganization.model';
 
 let db: Sequelize;
 
@@ -49,6 +50,7 @@ export const initSequelize = () => {
     RolePermission,
     Permission,
     SystemLogs,
+    UserOrganization
   ]);
 
   return sequelize;

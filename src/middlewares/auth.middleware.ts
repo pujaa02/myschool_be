@@ -36,12 +36,11 @@ const authMiddleware = catchAsync((req: Request, res: Response, next: NextFuncti
           }
         } catch (error) {
           return generalResponse(
-            req,
             res,
             error.message ? error?.message : error,
             'UNAUTHORIZED_ERROR',
-            false,
             'error',
+            false,
             401,
           );
         }
