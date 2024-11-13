@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import { NODE_ENV, PORT } from './config';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -10,6 +10,8 @@ import { logger } from './common/util/logger';
 import * as http from 'http';
 import errorMiddleware from './middlewares/error.middleware';
 import { initializeSocket } from './modules/socket';
+import passport from 'passport';
+import { auth } from './middlewares/passport';
 
 const app: Application = express();
 const env: string = NODE_ENV || 'development';
@@ -21,7 +23,7 @@ function initializeMiddleWares() {
   app.use(express.json());
   app.use(cors({ credentials: true, origin: true }));
   app.use(cookieParser());
-
+  auth(passport);
   app.use((req, res, next) => {
     global.currentRequest = req;
     global.currentResponse = res;

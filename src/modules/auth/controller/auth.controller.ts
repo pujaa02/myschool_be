@@ -41,7 +41,6 @@ export default class AuthController {
    */
 
   public login = catchAsync(async (req: Request, res: Response) => {
-    console.log('🚀 ~ AuthController ~ login=catchAsync ~ req:', req);
     const responseData = await this.authRepository.login(req.body as LoginInterface);
     return generalResponse(res, responseData, 'LOGIN_SUCCESS');
   });
