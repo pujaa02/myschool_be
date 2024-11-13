@@ -1,3 +1,4 @@
+import Role from '../models/role.model';
 import { generalResponse } from '../common/helper/response/generalResponse';
 import { HttpException } from '../common/helper/response/httpException';
 import { catchAsync } from '../common/util';
@@ -26,7 +27,6 @@ const authMiddleware = catchAsync((req: Request, res: Response, next: NextFuncti
           if (err || !user) {
             throw new HttpException(401, 'INVALID_TOKEN', true);
           }
-
           if (checkInclude(req)) {
             if (user) await setUserData(req, user, next);
             next();
@@ -46,50 +46,32 @@ const authMiddleware = catchAsync((req: Request, res: Response, next: NextFuncti
 
 const setUserData = async (req: Request, user: User, _next: NextFunction) => {
   try {
-    const byPassVerifications = ['set-password', 'getLoggedIn'];
-    const userRepo = new UserRepo();
-    // const defaultLanguage = (await LanguageModel.findOne({ where: { is_default: true } })).name;
-    const userData = await userRepo.get({
-      where: {
-        id: user.id,
-      },
-      attributes: [
-        [Sequelize.col('role.name'), 'role_name'],
-        'id',
-        'email',
-        'full_name',
-        'first_name',
-        'last_name',
-        'username',
-        'contact',
-        'profile_image',
-        'added_by',
-        'date_format',
-        'timezone',
-        'birth_date',
-        'gender',
-        'address1',
-        'address2',
-        'city',
-        'country',
-        'state',
-        'zip',
-        'active',
-        'verified',
-        'created_at',
-        'updated_at',
-        'role_id',
-        // 'is_head',
+    // const userRepository = new UserRepo();
+    const userData: any = await User.findOne({
+      where: { id: user.id },
+      include: [
+        {
+          model: Role,
+        },
       ],
-      // raw: true,
+      rejectOnEmpty: false,
     });
     if (user.active !== USER_STATUS.ACTIVE) {
       throw new HttpException(400, 'LOGIN_RESTRICTED');
     }
 
-    if (user && !user?.verified && !byPassVerifications.find((a) => req.url.includes(a)))
-      throw new HttpException(401, 'INVALID_TOKEN');
-    //  req.tokenData = userData as TokenDataInterface,
+    if (user && !user?.verified) throw new HttpException(401, 'INVALID_TOKEN');
+    req.tokenData = {
+      id: userData.id,
+      first_name: userData.first_name,
+      last_name: userData.last_name,
+      username: userData.username,
+      email: userData.email,
+      verified: userData.verified,
+      timezone: userData.timezone,
+      date_format: userData?.date_format || 'MM/dd/yyyy',
+      role: userData.role,
+    };
   } catch (error) {
     throw new HttpException(401, 'UNAUTHORIZED_ERROR');
   }

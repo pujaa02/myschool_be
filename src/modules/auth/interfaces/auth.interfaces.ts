@@ -36,7 +36,7 @@ export interface ChangePasswordInterface {
 }
 
 export interface RoleData {
-  role_id: number;
+  id: number;
   organizationUUID: string;
   is_system: boolean;
 }
@@ -49,15 +49,9 @@ export type TokenDataInterface = {
   username?: string;
   email: string;
   verified?: boolean;
-  organization_id: number;
-  organization_uuid: string;
-  orgOwnerId: number;
   timezone: string;
   date_format: string;
-  pass_updated_date: Date | string;
-  two_factor_enabled: boolean;
-  two_factor_verified: boolean;
-  secret_2fa?: string;
+  // role_id: string;
   role?: RoleData; // current organization roleId and is_system flag
 };
 export type ExamTokenInfoInterface = {

@@ -88,7 +88,7 @@ export default class AuthController {
         [Sequelize.col('permission.id'), 'permission_id'],
       ],
       where: {
-        role_id: tokenData.role.role_id,
+        role_id: tokenData.role.id,
       },
     });
     const role = await this.roleRepository.getAll({});

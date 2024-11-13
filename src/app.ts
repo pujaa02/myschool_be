@@ -23,6 +23,7 @@ function initializeMiddleWares() {
   app.use(express.json());
   app.use(cors({ credentials: true, origin: true }));
   app.use(cookieParser());
+  app.use(passport.initialize());
   auth(passport);
   app.use((req, res, next) => {
     global.currentRequest = req;

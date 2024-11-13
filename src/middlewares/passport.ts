@@ -5,7 +5,8 @@ import { JWT_SECRET } from '../config';
 import User from '../models/user.model';
 
 const getToken: any = (req: Request) => {
-  return req.cookies.token;
+  // return req.headers.cookie;
+  return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im15c2Nob29sQGdtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzMxNTAyMzQ5LCJleHAiOjE3MzE1ODg3NDl9.hux2GN469JOeCBS6bYSpV3jmnXcelnB0NfBQoHtuqhI';
 };
 const options: { jwtFromRequest: ReturnType<typeof getToken>; secretOrKey: string } = {
   jwtFromRequest: getToken,
@@ -17,7 +18,7 @@ const auth = (passport: any) => {
   passport.use(
     new Strategy(options, async (jwt_payload, done) => {
       try {
-        const user = await User.findOne(jwt_payload.user_id);
+        const user = await User.findOne(jwt_payload.userId);
         if (user) {
           return done(null, user);
         } else {

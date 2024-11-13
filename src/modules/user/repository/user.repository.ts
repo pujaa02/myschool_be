@@ -119,7 +119,7 @@ export default class UserRepo extends BaseRepository<User> {
       active: USER_STATUS.ACTIVE,
       role_id: isRoleExists.id,
       full_name: `${data?.first_name} ${data?.last_name}`,
-      added_by: tokenData?.user?.id,
+      added_by: tokenData?.id,
     });
 
     return {
@@ -283,7 +283,7 @@ export default class UserRepo extends BaseRepository<User> {
           username: username,
           active: USER_STATUS.ACTIVE,
           role_id: isRoleExists.id,
-          added_by: tokenData?.user?.id,
+          added_by: tokenData?.id,
           // language: language.name as LanguageEnum,
         };
       }),

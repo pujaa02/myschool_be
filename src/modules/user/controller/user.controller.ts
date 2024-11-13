@@ -27,6 +27,7 @@ export default class UserController {
 
   public readonly getLoggedInUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const user = req.tokenData;
+    console.log('🚀 ~ UserController ~ readonlygetLoggedInUser=catchAsync ~ user:', user.role);
     const roleAndPermission = await this.rolePermissionRepository.getAll({
       include: [
         {
@@ -51,71 +52,15 @@ export default class UserController {
         [Sequelize.col('permission.id'), 'permission_id'],
       ],
       where: {
-        role_id: user.role.role_id,
+        role_id: user.role.id,
       },
     });
+    console.log('🚀 ~ UserController ~ readonlygetLoggedInUser=catchAsync ~ roleAndPermission:', roleAndPermission);
     const role = await this.roleRepository.getAll({});
 
     const permission = await this.permissionRepository.getAll({});
 
     return generalResponse(res, { user, roleAndPermission, role, permission }, 'USER_FETCHED');
-    // try {
-    //   const { id, organization_id } = req.tokenData;
-    //   const user: User & { organization?: UserOrganization } = await this.userRepository.get({
-    //     where: { id },
-    //     include: [
-    //       {
-    //         model: Role.scope({ method: ['defaultOrganization', organization_id] }),
-    //         required: false,
-    //         include: [
-    //           {
-    //             model: Role.scope({ method: ['defaultOrganization', organization_id] }),
-    //             attributes: ['id', 'name'],
-    //             required: false,
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //     rejectOnEmpty: false,
-    //   });
-
-    //   const organizations = await this.userOrganizationRepo.getAll({
-    //     where: { user_id: id },
-    //     include: [
-    //       {
-    //         model: User,
-    //         attributes: ['id', 'first_name', 'last_name'],
-    //         required: true,
-    //       },
-    //     ],
-    //   });
-
-    //   // const permissions = await this.permissionGroupRepository.getPermissions({
-    //   //   role_id: user.user_roles?.[0]?.role_id,
-    //   //   organization_id,
-    //   //   withoutAll: false,
-    //   // });
-
-    //   // permissions.forEach((obj) => {
-    //   //   obj.permissions = obj.permissions.map((permission) => {
-    //   //     permission.status = _.clone(permission.role_permissions[0].status);
-    //   //     return permission;
-    //   //   });
-    //   // });
-
-    //   return generalResponse(res, {
-    //     user: {
-    //       ...user.toJSON(),
-    //       organization: organizations.find((obj) => obj.id === organization_id),
-    //       user_organizations: organizations,
-    //     },
-    //     two_factor_enabled: req.tokenData.two_factor_enabled,
-    //     two_factor_verified: req.tokenData.two_factor_verified,
-    //     // permissions,
-    //   });
-    // } catch (error) {
-    //   return next(error);
-    // }
   });
 
   public readonly createUser = catchAsync(async (req: Request, res: Response) => {
