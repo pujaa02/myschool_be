@@ -1,4 +1,4 @@
-import { Request, Response,NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import _ from 'lodash';
 import UserRepo from '../repository/user.repository';
 import { catchAsync } from '../../../common/util';
@@ -17,7 +17,7 @@ export default class UserController {
     // do nothing.
   }
 
-  public readonly getLoggedInUser = async (req: Request, res: Response, next: NextFunction) => {
+  public readonly getLoggedInUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id, organization_id } = req.tokenData;
       const user: User & { organization?: UserOrganization } = await this.userRepository.get({
@@ -75,7 +75,7 @@ export default class UserController {
     } catch (error) {
       return next(error);
     }
-  };
+  });
 
   public readonly createUser = catchAsync(async (req: Request, res: Response) => {
     const { body, tokenData, transaction, files } = req;
@@ -88,7 +88,7 @@ export default class UserController {
       files,
     });
 
-    return generalResponse( res, result, 'USER_CREATE','error', true);
+    return generalResponse(res, result, 'USER_CREATE', 'error', true);
   });
 
   // public readonly updateUser = catchAsync(async (req: Request, res: Response) => {
@@ -126,7 +126,7 @@ export default class UserController {
 
   public readonly getUserDetails = catchAsync(async (req: Request, res: Response) => {
     const responseData = await getAllDetails(User, User.name, queryBuildCases.getAllRoleWiseData, req);
-    return generalResponse( res, responseData, 'USER_FETCHED','error', false);
+    return generalResponse(res, responseData, 'USER_FETCHED', 'error', false);
   });
 
   // public readonly deleteUser = catchAsync(async (req: Request, res: Response) => {
@@ -149,6 +149,6 @@ export default class UserController {
     const { body, tokenData, transaction } = req;
 
     const result = await this.userRepository.bulkAddUser({ data: body, tokenData, transaction, shouldSentMail: true });
-    return generalResponse( res, result, 'USERS_CREATE_SUCCESS','error', true);
+    return generalResponse(res, result, 'USERS_CREATE_SUCCESS', 'error', true);
   });
 }

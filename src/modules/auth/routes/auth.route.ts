@@ -26,25 +26,28 @@ class AuthRoute implements Routes {
     );
 
     // logout route
-    this.router.post(`${this.path}/logout`, multer().none(), 
-    // authMiddleware,
-     this.authController.logout);
+    this.router.post(
+      `${this.path}/logout`,
+      multer().none(),
+      // authMiddleware,
+      this.authController.logout,
+    );
 
     // Register route
-    this.router.post(
-      `${this.path}/register`,
-      // fileUpload(1),
-      validationMiddleware(RegisterSchema, 'body'),
-      this.authController.registerUser,
-    );
+    // this.router.post(
+    //   `${this.path}/register`,
+    //   // fileUpload(1),
+    //   validationMiddleware(RegisterSchema, 'body'),
+    //   this.authController.registerUser,
+    // );
 
     // Change Password
-    this.router.post(
-      `${this.path}/change-password`,
-      // authMiddleware(false, true),
-      validationMiddleware(ChangePasswordSchema, 'body'),
-      this.authController.changePassword,
-    );
+    // this.router.post(
+    //   `${this.path}/change-password`,
+    //   // authMiddleware(false, true),
+    //   validationMiddleware(ChangePasswordSchema, 'body'),
+    //   this.authController.changePassword,
+    // );
 
     // // Forgot Password
     // this.router.post(
@@ -54,25 +57,27 @@ class AuthRoute implements Routes {
     // );
 
     // Set Password
-    this.router.post(
-      `${this.path}/set-password`,
-      multer().none(),
-      validationMiddleware(ResetPasswordSchema, 'body'),
-      this.authController.setPassword,
-    );
+    // this.router.post(
+    //   `${this.path}/set-password`,
+    //   multer().none(),
+    //   validationMiddleware(ResetPasswordSchema, 'body'),
+    //   this.authController.setPassword,
+    // );
 
     // Reset Password
-    this.router.post(
-      `${this.path}/reset-password`,
-      multer().none(),
-      validationMiddleware(ResetPasswordSchema, 'body'),
-      this.authController.setPassword,
-    );
+    // this.router.post(
+    //   `${this.path}/reset-password`,
+    //   multer().none(),
+    //   validationMiddleware(ResetPasswordSchema, 'body'),
+    //   this.authController.setPassword,
+    // );
 
     // Get Logged In
-    this.router.get(`${this.path}/getLoggedIn`,
+    this.router.get(
+      `${this.path}/getLoggedIn`,
       //  authMiddleware ,
-       this.authController.getLoggedIn);
+      this.authController.getLoggedIn,
+    );
   }
 }
 

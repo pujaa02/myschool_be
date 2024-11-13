@@ -17,37 +17,38 @@ class UserRoute implements Routes {
 
   private initializeRoutes() {
     // post api
-    this.router
-      .route(`${this.path}`)
-      .post(
-        // authMiddleware(),
-        checkPermission(BasePermissionGroups.USER, PermissionTypes.CREATE),
-        // fileUploadWasabi(25),
-        validationMiddleware(createUserSchema, 'body'),
-        this.userController.createUser,
-      )
-      // .put(
-      //   // authMiddleware(),
-      //   checkPermission(BasePermissionGroups.USER, PermissionTypes.UPDATE),
-      //   // fileUploadWasabi(10),
-      //   validationMiddleware(updateUserSchema, 'body'),
-      //   this.userController.updateUser,
-      // )
-      // .delete(
-      //   // authMiddleware(),
-      //   checkPermission(BasePermissionGroups.USER, PermissionTypes.DELETE),
-      //   validationMiddleware(userDeleteIdSchema, 'body'),
-      //   this.userController.deleteAllUser,
-      // )
-      // .get(
-      //   // authMiddleware(),
-      //   checkPermission(BasePermissionGroups.USER, PermissionTypes.READ),
-      //   this.userController.getUsers,
-      // );
+    this.router.route(`${this.path}`).post(
+      // authMiddleware(),
+      checkPermission(BasePermissionGroups.USER, PermissionTypes.CREATE),
+      // fileUploadWasabi(25),
+      validationMiddleware(createUserSchema, 'body'),
+      this.userController.createUser,
+    );
+    // .put(
+    //   // authMiddleware(),
+    //   checkPermission(BasePermissionGroups.USER, PermissionTypes.UPDATE),
+    //   // fileUploadWasabi(10),
+    //   validationMiddleware(updateUserSchema, 'body'),
+    //   this.userController.updateUser,
+    // )
+    // .delete(
+    //   // authMiddleware(),
+    //   checkPermission(BasePermissionGroups.USER, PermissionTypes.DELETE),
+    //   validationMiddleware(userDeleteIdSchema, 'body'),
+    //   this.userController.deleteAllUser,
+    // )
+    // .get(
+    //   // authMiddleware(),
+    //   checkPermission(BasePermissionGroups.USER, PermissionTypes.READ),
+    //   this.userController.getUsers,
+    // );
 
-    this.router.get(`${this.path}/logged-in-user`,
-      //  authMiddleware(true, true), 
-       this.userController.getLoggedInUser);
+    this.router.get(
+      `${this.path}/logged-in-user`,
+      //  authMiddleware(true, true),
+      (req) => {},
+      this.userController.getLoggedInUser,
+    );
 
     // this.router
     //   .route(`${this.path}/get-data`)

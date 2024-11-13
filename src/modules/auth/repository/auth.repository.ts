@@ -5,6 +5,7 @@ import {
   ChangePasswordInterface,
   LoginInterface,
   SetPasswordInterface,
+  TokenDataInterface,
 } from '../interfaces/auth.interfaces';
 import { HttpException } from '../../../common/helper/response/httpException';
 import { ARGON_SALT_LENGTH, SECRET_KEY } from '../../../config';
@@ -48,7 +49,7 @@ export default class AuthRepo extends BaseRepository<User> {
     });
   };
 
-  logout = async (reqUser: User) => {
+  logout = async (reqUser: TokenDataInterface) => {
     await this.userRepository.update({ verified: false }, { where: { id: reqUser.id } });
   };
 
@@ -84,7 +85,7 @@ export default class AuthRepo extends BaseRepository<User> {
             email: user.email,
             contact: user.contact,
           },
-          access_token: this.createToken(user, is_remember),
+          // access_token: this.createToken(user, is_remember),
         };
       }
     } else throw new HttpException(400, 'REGISTER_FIRST', null, true);

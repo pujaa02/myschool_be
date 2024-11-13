@@ -28,10 +28,10 @@ export default class AuthController {
    * @returns {Promise<void>}
    */
 
-  public readonly registerUser = catchAsync(async (req: Request, res: Response) => {
-    const user = await this.authRepository.registerUser(req.body as AuthRegisterReqInterface);
-    return generalResponse(req, res, user, 'REGISTER_SUCCESS', true);
-  });
+  // public readonly registerUser = catchAsync(async (req: Request, res: Response) => {
+  //   const user = await this.authRepository.registerUser(req.body as AuthRegisterReqInterface);
+  //   return generalResponse(req, res, user, 'REGISTER_SUCCESS', true);
+  // });
 
   /**
    * user login Api
@@ -42,7 +42,7 @@ export default class AuthController {
 
   public login = catchAsync(async (req: Request, res: Response) => {
     const responseData = await this.authRepository.login(req.body as LoginInterface);
-    return generalResponse(req, res, responseData, 'LOGIN_SUCCESS', false);
+    return generalResponse(res, responseData, 'LOGIN_SUCCESS');
   });
 
   /**
@@ -52,8 +52,8 @@ export default class AuthController {
    * @returns {Promise<void>}
    */
   public logout = catchAsync(async (req: Request, res: Response) => {
-    const responseData = await this.authRepository.logout(req.tokenData.user);
-    return generalResponse(req, res, responseData, 'LOGIN_OUT_SUCCESS', false);
+    const responseData = await this.authRepository.logout(req.tokenData);
+    return generalResponse(res, responseData, 'LOGIN_OUT_SUCCESS');
   });
 
   /**
@@ -63,9 +63,7 @@ export default class AuthController {
    * @returns {Promise<void>}
    */
   public getLoggedIn = catchAsync(async (req: Request, res: Response) => {
-    const {
-      tokenData: { user },
-    } = req;
+    const { tokenData } = req;
     const roleAndPermission = await this.rolePermissionRepository.getAll({
       include: [
         {
@@ -90,14 +88,14 @@ export default class AuthController {
         [Sequelize.col('permission.id'), 'permission_id'],
       ],
       where: {
-        role_id: user.role_id,
+        role_id: tokenData.role.role_id,
       },
     });
     const role = await this.roleRepository.getAll({});
 
     const permission = await this.permissionRepository.getAll({});
 
-    return generalResponse(req, res, { user, roleAndPermission, role, permission }, 'USER_FETCHED', false);
+    return generalResponse(res, { tokenData, roleAndPermission, role, permission }, 'USER_FETCHED');
   });
 
   // /**
@@ -106,10 +104,10 @@ export default class AuthController {
   //  * @param {Response} res
   //  * @returns {Promise<void>}
   //  */
-  public setPassword = catchAsync(async (req: Request, res: Response) => {
-    const data = await this.authRepository.setPassword({ user: req.tokenData?.user, password: req.body.password });
-    return generalResponse(req, res, data, 'SET_PASSWORD_SUCCESS', false);
-  });
+  // public setPassword = catchAsync(async (req: Request, res: Response) => {
+  //   const data = await this.authRepository.setPassword({ user: req.tokenData?.user, password: req.body.password });
+  //   return generalResponse(req, res, data, 'SET_PASSWORD_SUCCESS', false);
+  // });
 
   // /**
   //  * set Password Api
@@ -117,12 +115,12 @@ export default class AuthController {
   //  * @param {Response} res
   //  * @returns {Promise<void>}
   //  */
-  public changePassword = catchAsync(async (req: Request, res: Response) => {
-    const data = await this.authRepository.changePassword({
-      user: req.tokenData?.user,
-      newPassword: req.body.newPassword,
-      oldPassword: req.body.oldPassword,
-    });
-    return generalResponse(req, res, data, 'CHANGE_PASSWORD_SUCCESS', true);
-  });
+  // public changePassword = catchAsync(async (req: Request, res: Response) => {
+  //   const data = await this.authRepository.changePassword({
+  //     user: req.tokenData?.user,
+  //     newPassword: req.body.newPassword,
+  //     oldPassword: req.body.oldPassword,
+  //   });
+  //   return generalResponse(req, res, data, 'CHANGE_PASSWORD_SUCCESS', true);
+  // });
 }
