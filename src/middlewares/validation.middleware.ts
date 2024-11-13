@@ -26,9 +26,9 @@ const validationMiddleware = (type: any, value: 'body' | 'query' | 'params' | st
       const error: any = e;
       if (error.details) {
         const errorResponse = errorFilterValidator(error.details);
-        return generalResponse(req, res, errorResponse, 'VALIDATION_ERROR', true, 'error', 400);
+        return generalResponse(res, errorResponse, 'Something went wrong!', 'error', true, 422);
       }
-      return generalResponse(req, res, error, 'SOMETHING_WRONG', true, 'success', 400);
+      return generalResponse(res, null, 'Something went wrong!', 'success', true, 400);
     }
   };
 };

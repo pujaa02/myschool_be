@@ -5,6 +5,7 @@ import UserController from '../controller/user.controller';
 import { createUserSchema, updateUserSchema } from '../validationSchema/user.validation';
 import { BasePermissionGroups, PermissionTypes } from '../../../common/constants/permissionGroup.constants';
 import { checkPermission } from '../../../middlewares/permission.middleware';
+import authMiddleware from '../../../middlewares/auth.middleware';
 
 class UserRoute implements Routes {
   public path = '/users';
@@ -18,7 +19,7 @@ class UserRoute implements Routes {
   private initializeRoutes() {
     // post api
     this.router.route(`${this.path}`).post(
-      // authMiddleware(),
+      authMiddleware,
       checkPermission(BasePermissionGroups.USER, PermissionTypes.CREATE),
       // fileUploadWasabi(25),
       validationMiddleware(createUserSchema, 'body'),
@@ -43,12 +44,7 @@ class UserRoute implements Routes {
     //   this.userController.getUsers,
     // );
 
-    this.router.get(
-      `${this.path}/logged-in-user`,
-      //  authMiddleware(true, true),
-      (req) => {},
-      this.userController.getLoggedInUser,
-    );
+    this.router.get(`${this.path}/logged-in-user`, authMiddleware, this.userController.getLoggedInUser);
 
     // this.router
     //   .route(`${this.path}/get-data`)

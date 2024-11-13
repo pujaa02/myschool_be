@@ -77,7 +77,7 @@ export default class AuthRepo extends BaseRepository<User> {
           user: {
             verified: user.verified,
             username: user.username,
-            // secret_2fa: user.secret_2fa,
+            id: user.id,
             role: user.role,
             first_name: user.first_name,
             last_name: user.last_name,
@@ -85,7 +85,7 @@ export default class AuthRepo extends BaseRepository<User> {
             email: user.email,
             contact: user.contact,
           },
-          // access_token: this.createToken(user, is_remember),
+          access_token: this.createToken(user, is_remember),
         };
       }
     } else throw new HttpException(400, 'REGISTER_FIRST', null, true);

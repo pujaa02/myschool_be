@@ -5,6 +5,7 @@ import { JsonKeys } from '../common/interfaces/general/general.interface';
 import axios from 'axios';
 import { NextFunction, Request, Response } from 'express';
 import { DatabaseError } from 'sequelize';
+import { COMMON_MESSAGES } from '../common/translation/common.message';
 
 const errorMiddleware = async (error: Error, req: Request, res: Response, next: NextFunction) => {
   try {
@@ -12,29 +13,34 @@ const errorMiddleware = async (error: Error, req: Request, res: Response, next: 
       const data = error.data || {};
       const status: number = error.status || 500;
       const message: JsonKeys = (error.message as JsonKeys) || 'SOMETHING_WRONG';
-      return generalResponse(req, res, data, message, true, 'error', status);
+      return generalResponse(res, data, message, 'error', true, status);
     }
     if (axios.isAxiosError(error)) {
       // axios Error
       return generalResponse(
-        req,
         res,
         {
           code: error.code,
           detailError: error.response?.data,
         },
-        'SOMETHING_WRONG',
-        false,
+        error.response?.data,
         'error',
+        false,
         error.response?.status || 500,
       );
     }
 
     if (error instanceof DatabaseError) {
-      return generalResponse(req, res, error.message ? error?.message : error, 'SOMETHING_WRONG', false, 'error', 500);
+      return generalResponse(
+        res,
+        error.message ? error?.message : error,
+        COMMON_MESSAGES.SOMETHING_WRONG,
+        'error',
+        false,
+        500,
+      );
     }
-
-    return generalResponse(req, res, error.stack, 'SOMETHING_WRONG', false, 'error', 500);
+    return generalResponse(res, error.stack, COMMON_MESSAGES.SOMETHING_WRONG, 'error', false, 500);
   } catch (err) {
     next(err);
   }

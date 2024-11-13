@@ -16,9 +16,9 @@ const env: string = NODE_ENV || 'development';
 const port: string | number = PORT || 8000;
 
 function initializeMiddleWares() {
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true }));
-  //   app.use(express.json());
+  // app.use(bodyParser.json());
+  // app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(express.json());
   app.use(cors({ credentials: true, origin: true }));
   app.use(cookieParser());
 

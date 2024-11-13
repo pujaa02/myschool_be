@@ -2,9 +2,7 @@ import { generalResponse } from '../common/helper/response/generalResponse';
 import { HttpException } from '../common/helper/response/httpException';
 import { catchAsync } from '../common/util';
 import { USER_STATUS } from '../models/interfaces/user.model.interface';
-import LanguageModel from '../models/language.model';
 import User from '../models/user.model';
-import { UserType } from '../modules/auth/interfaces/auth.interfaces';
 import UserRepo from '../modules/user/repository/user.repository';
 import { NextFunction, Request, Response } from 'express';
 import _ from 'lodash';
@@ -25,24 +23,19 @@ const authMiddleware = catchAsync((req: Request, res: Response, next: NextFuncti
     } else {
       passport.authenticate('jwt', async (err: Error, user: User) => {
         try {
-          if (err) throw new HttpException(401, 'INVALID_TOKEN', true);
+          if (err || !user) {
+            throw new HttpException(401, 'INVALID_TOKEN', true);
+          }
+
           if (checkInclude(req)) {
             if (user) await setUserData(req, user, next);
             next();
-          } else if (!user) throw new HttpException(401, 'INVALID_TOKEN', true);
-          else {
+          } else {
             await setUserData(req, user, next);
             return next();
           }
         } catch (error) {
-          return generalResponse(
-            res,
-            error.message ? error?.message : error,
-            'UNAUTHORIZED_ERROR',
-            'error',
-            false,
-            401,
-          );
+          return generalResponse(res, error.message || error, 'UNAUTHORIZED_ERROR');
         }
       })(req, res, next);
     }
@@ -53,9 +46,9 @@ const authMiddleware = catchAsync((req: Request, res: Response, next: NextFuncti
 
 const setUserData = async (req: Request, user: User, _next: NextFunction) => {
   try {
-    const byPassVerifications = ['/2FA/verify', '/2FA/qr', 'set-password', 'getLoggedIn'];
+    const byPassVerifications = ['set-password', 'getLoggedIn'];
     const userRepo = new UserRepo();
-    const defaultLanguage = (await LanguageModel.findOne({ where: { is_default: true } })).name;
+    // const defaultLanguage = (await LanguageModel.findOne({ where: { is_default: true } })).name;
     const userData = await userRepo.get({
       where: {
         id: user.id,
@@ -90,17 +83,13 @@ const setUserData = async (req: Request, user: User, _next: NextFunction) => {
       ],
       // raw: true,
     });
-
     if (user.active !== USER_STATUS.ACTIVE) {
       throw new HttpException(400, 'LOGIN_RESTRICTED');
     }
 
     if (user && !user?.verified && !byPassVerifications.find((a) => req.url.includes(a)))
       throw new HttpException(401, 'INVALID_TOKEN');
-
-    req.tokenData = {
-      user: userData as UserType,
-    };
+    //  req.tokenData = userData as TokenDataInterface,
   } catch (error) {
     throw new HttpException(401, 'UNAUTHORIZED_ERROR');
   }

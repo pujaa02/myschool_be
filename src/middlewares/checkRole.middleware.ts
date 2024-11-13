@@ -12,7 +12,7 @@ const checkRoleMiddleware = (feature: FeaturesEnum, permission: PermissionEnum):
     checkRoleParams(feature, req);
     const rolePermissionRepo = new RolePermissionRepo();
     const result = await rolePermissionRepo.validateRolePermission(
-      req.tokenData?.user?.role_id,
+      req.tokenData?.role?.role_id,
       feature,
       permission,
       req,
