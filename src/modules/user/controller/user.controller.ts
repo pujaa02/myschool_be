@@ -27,7 +27,6 @@ export default class UserController {
 
   public readonly getLoggedInUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const user = req.tokenData;
-    console.log('🚀 ~ UserController ~ readonlygetLoggedInUser=catchAsync ~ user:', user.role);
     const roleAndPermission = await this.rolePermissionRepository.getAll({
       include: [
         {
@@ -55,7 +54,6 @@ export default class UserController {
         role_id: user.role.id,
       },
     });
-    console.log('🚀 ~ UserController ~ readonlygetLoggedInUser=catchAsync ~ roleAndPermission:', roleAndPermission);
     const role = await this.roleRepository.getAll({});
 
     const permission = await this.permissionRepository.getAll({});
