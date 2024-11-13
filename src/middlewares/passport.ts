@@ -5,7 +5,7 @@ import { JWT_SECRET } from '../config';
 import User from '../models/user.model';
 
 const getToken: any = (req: Request) => {
-  return req.headers.Authorization;
+  return req.cookies.token;
 };
 const options: { jwtFromRequest: ReturnType<typeof getToken>; secretOrKey: string } = {
   jwtFromRequest: getToken,
