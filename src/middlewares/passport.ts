@@ -3,8 +3,10 @@ import { Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { JWT_SECRET } from '../config';
 import User from '../models/user.model';
+import { Base64 } from 'js-base64';
 
 const getToken: any = (req: Request) => {
+  const token = JSON.parse(Base64.decode(req.headers.cookie)) || {};
   // return req.headers.cookie;
   return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im15c2Nob29sQGdtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzMxNTAyMzQ5LCJleHAiOjE3MzE1ODg3NDl9.hux2GN469JOeCBS6bYSpV3jmnXcelnB0NfBQoHtuqhI';
 };
