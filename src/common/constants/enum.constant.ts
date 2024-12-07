@@ -39,9 +39,9 @@ export const queryBuildCases = {
 };
 
 export enum Super {
-  FIRST_NAME = 'MySchool',
-  LAST_NAME = 'Admin',
-  EMAIL = 'myschool@gmail.com',
-  PASSWORD = 'MySchool@12345',
+  FIRST_NAME = 'Admin',
+  LAST_NAME = 'Myschool',
+  EMAIL = 'Admin@gmail.com',
+  PASSWORD = 'Admin@12345',
   USERNAME = 'mySchool@admin',
 }
